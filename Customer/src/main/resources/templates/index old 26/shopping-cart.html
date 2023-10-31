@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments :: html_head}"></head>
+
+<body class="animsition">
+<header th:replace="~{fragments :: header_top}"></header>
+<div class="wrap-header-cart js-panel-cart">
+    <div class="s-full js-hide-cart"></div>
+
+    <div class="header-cart flex-col-l p-l-65 p-r-25">
+        <div class="header-cart-title flex-w flex-sb-m p-b-8">
+                <span class="mtext-103 cl2">
+                    Your Cart
+                </span>
+            <div class="fs-35 lh-10 cl2 p-lr-5 pointer hov-cl1 trans-04 js-hide-cart">
+                <i class="zmdi zmdi-close"></i>
+            </div>
+        </div>
+        <!-- Add your cart content here -->
+    </div>
+</div>
+<div class="mb-5">
+    <div th:if="${errorMessage}">
+        <p class="alert alert-danger" th:text="${errorMessage}"></p>
+    </div>
+</div>
+<div class="mb-5">
+    <div th:if="${text}">
+        <p class="alert alert-danger" th:text="${text}"></p>
+    </div>
+</div>
+
+<!-- Shoping Cart -->
+<!--<form th:action="@{/add-to-cart}" method="post" class="bg0 p-t-75 p-b-85">-->
+    <div class="container text-uppercase">
+        <div class="container">
+            <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+                <a href="../index.html" th:href="@{/index}" class="stext-109 cl8 hov-cl1 trans-04">
+                    Home
+                    <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+                </a>
+
+                <a href="#"
+                   class="stext-109 cl8 hov-cl1 trans-04">
+                    product
+                    <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+                </a>
+                <span class="stext-109 cl4" th:text="${'cart'}"></span>
+            </div>
+        </div>
+        <div class="container">
+            <h1>Your Shopping Cart</h1>
+            <hr>
+            <div th:if="${shoppingCart == null or shoppingCart.cartItems.isEmpty()}">
+                <p>Your cart is empty. Keep shopping!</p>
+            </div>
+            <!-- Check if the shopping cart has items -->
+            <div>
+                <table class="cart-table">
+                    <thead>
+                    <tr class="table_head" >
+                        <th class="column-1 text-center">Product</th>
+                        <th class="column-2 text-center">Price</th>
+                        <th class="column-3 text-center">Quantity</th>
+                        <th class="column-4 text-center">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Iterate through cart items -->
+                    <tr th:each="cartItem : ${shoppingCart.cartItems}" class="table-row">
+<!--==========================================================================================================================-->
+                        <td class="column-1 col-md-1">
+                            <div class="how-itemcart1">
+                                <img th:src="@{${'/ProductImage/' + cartItem.product.getImageUrls[0]}}" alt="IMG">
+                            </div>
+                        </td>
+<!--==========================================================================================================================-->
+                        <td class="column-2 col-md-1">
+                            <p th:text="${'₹' + cartItem.product.getCostPrice()}"></p>
+                        </td>
+<!--==========================================================================================================================-->
+                        <td class="column-3 col-md-2">
+
+
+                            <div class="d-flex">
+                                <form th:action="@{/update-cart}" method="post">
+
+                                <input type="hidden" name="id" th:value="${cartItem.product.id}">
+                                    <input type="hidden" name="cart_item_id" th:value="${cartItem.id}">
+                                    <input type="number" name="quantity" th:value="${cartItem.quantity}" size="1" style="width: 4em" value="1" min="1" step="1" class="zdmi zmdi-hc-border-circle c-input-text qty text">
+                                  <div class="col-md-2 text-center">
+                                    <button type="submit" name="updateButton" th:value="${cartItem.product.id}"  class="zmdi zmdi-triangle-up btn-primary"> Update</button>
+                                      <hr>
+                                    <button type="submit" name="deleteButton" th:value="${cartItem.product.id}"   class="zmdi zmdi-delete btn-danger"> Delete</button>
+                                  </div>
+                                </form>
+
+                            </div>
+                        </td>
+<!--==========================================================================================================================-->
+                        <td class="column-4 col-md-2">
+                            <p th:text="${'₹' + cartItem.product.getCostPrice() * cartItem.quantity}"></p>
+                        </td>
+<!--==========================================================================================================================-->
+                    </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <div class="checkout-button d-flex justify-content-between">
+                    <p>Total Price: <strong th:text="${'₹ ' + shoppingCart.totalPrice}"></strong></p>
+                    <form th:action="@{/checkout}" method="get">
+                        <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+<!--</form>-->
+<!--        <div class="row mt-2">-->
+<!--            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">-->
+<!--                <div class="m-l-25 m-r&#45;&#45;38 m-lr-0-xl">-->
+<!--                    <div class="wrap-table-shopping-cart">-->
+<!--                        <div class="container">-->
+<!--                            <h1>Your Shopping Cart</h1>-->
+<!--                            <hr>-->
+
+<!--                            <div th:if="${shoppingCart == null or shoppingCart.cartItems.isEmpty()}">-->
+<!--                                <p>Your cart is empty. Keep shopping!</p>-->
+<!--                            </div>-->
+
+<!--                            <div th:if="${shoppingCart != null and not shoppingCart.cartItems.isEmpty()}">-->
+<!--                                <table class="cart-table">-->
+<!--                                    <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th class="column-1">Product</th>-->
+<!--                                        <th class="column-2"></th>-->
+<!--                                        <th class="column-3">Price</th>-->
+<!--                                        <th class="column-4">Quantity</th>-->
+<!--                                        <th class="column-5">Total</th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                    <tbody>-->
+<!--                                    <tr th:each="cartItem : ${shoppingCart.cartItems}">-->
+<!--                                        <td class="column-1">-->
+<!--                                            <div class="how-itemcart1">-->
+<!--                                                <img th:src="@{${'/ProductImage/' + cartItem.product.imageUrls[0]}}"-->
+<!--                                                     alt="IMG">-->
+<!--                                                <span th:text="${cartItem.product.getName()}"></span>-->
+<!--                                            </div>-->
+<!--                                        </td>-->
+<!--                                        <td class="column-3">₹<span th:text="${cartItem.product.getCostPrice()}"></span>-->
+<!--                                        </td>-->
+<!--                                        &lt;!&ndash;                        <td class="column-4" th:text="${cartItem.quantity}"></td>&ndash;&gt;-->
+<!--                                        <td class="column-4">-->
+
+<!--                                            <form th:action="@{/update-cart}" method="post">-->
+<!--                                                <input type="hidden" name="id" th:value="${cartItem.product.id}">-->
+
+<!--                                                <input type="hidden" name="cart_item_id" th:value="${cartItem.id}">-->
+
+<!--                                                <input type="number" name="quantity" th:value="${cartItem.quantity}"-->
+<!--                                                       size="4" style="width: 4em" value="1" min="1" step="1"-->
+<!--                                                       class="c-input-text qty text">-->
+<!--                                                <p th:text="'₹' + ${cartItem.unitPrice * cartItem.quantity}"></p>-->
+<!--                                                <button type="submit" name="updateButton"-->
+<!--                                                        th:value="${cartItem.product.id}" title="Update"-->
+<!--                                                        class="btn btn-primary">Update-->
+<!--                                                </button>-->
+<!--                                                <button type="submit" name="deleteButton"-->
+<!--                                                        th:value="${cartItem.product.id}" title="Delete"-->
+<!--                                                        class="btn btn-danger">Delete-->
+<!--                                                </button>-->
+<!--                                            </form>-->
+<!--                                        </td>-->
+<!--                                        <div>-->
+<!--                                            <td class="column-5"-->
+<!--                                                th:text="${'₹'+cartItem.unitPrice * cartItem.quantity}"></td>-->
+<!--                                        </div>-->
+<!--                                    </tr>-->
+<!--                                    </tbody>-->
+<!--                                </table>-->
+
+
+<!--                                <div class="checkout-button d-flex">-->
+<!--                                    <p>Total Price: <span th:text="${'₹'+grandTotal}"></span></p>-->
+<!--                                    <a th:href="@{/checkout}" class="btn btn-primary">Proceed to Checkout</a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row mt-2">-->
+<!--            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">-->
+<!--                <div class="m-l-25 m-r&#45;&#45;38 m-lr-0-xl">-->
+<!--                    <div class="wrap-table-shopping-cart">-->
+<!--                        <div class="container">-->
+<!--                            <h1>Your Shopping Cart</h1>-->
+<!--                            <hr>-->
+
+<!--                            <div th:if="${shoppingCart == null or shoppingCart.cartItems.isEmpty()}">-->
+<!--                                <p>Your cart is empty. Keep shopping!</p>-->
+<!--                            </div>-->
+
+<!--                            <div th:if="${shoppingCart != null and not shoppingCart.cartItems.isEmpty()}">-->
+<!--                                <table class="cart-table">-->
+<!--                                    <thead>-->
+<!--                                    <tr class="table_head">-->
+<!--                                        <th class="column-1">Product</th>-->
+<!--                                        <th class=""></th>-->
+<!--                                        <th class="column-2">Price</th>-->
+<!--                                        <th class=""></th>-->
+<!--                                        <th class="column-3">Quantity</th>-->
+<!--                                        <th class=""></th>-->
+<!--                                        <th class="column-4">Total</th>-->
+<!--                                        <th class=""></th>-->
+<!--                                        <th class="column-5">Action</th>-->
+<!--                                    </tr>-->
+<!--                                    </thead>-->
+<!--                                    <tbody>-->
+<!--                                    <tr th:each="cartItem : ${shoppingCart.cartItems}">-->
+<!--                                        <td class="column-1">-->
+<!--                                            <div class="how-itemcart1">-->
+<!--                                                <img th:src="@{${'/ProductImage/' + cartItem.product.imageUrls[0]}}" alt="IMG">-->
+<!--                                                <span th:text="${cartItem.product.getName()}"></span>-->
+<!--                                            </div>-->
+<!--                                        </td>-->
+<!--                                        <td class="column-3">₹<span th:text="${cartItem.product.getCostPrice()}"></span></td>-->
+<!--                                        <td class="column-4">-->
+<!--                                            <form th:action="@{/update-cart}" method="post">-->
+<!--                                                <input type="hidden" name="id" th:value="${cartItem.product.id}">-->
+<!--                                                <input type="hidden" name="cart_item_id" th:value="${cartItem.id}">-->
+<!--                                                <input type="number" name="quantity" th:value="${cartItem.quantity}" size="4" style="width: 4em" value="1" min="1" step="1" class="c-input-text qty text">-->
+<!--                                                <p th:text="${'₹' +cartItem.unitPrice * cartItem.quantity}"></p>-->
+<!--                                                <button type="submit" name="updateButton" th:value="${cartItem.product.id}" title="Update" class="btn btn-primary">Update</button>-->
+<!--                                                <button type="submit" name="deleteButton" th:value="${cartItem.product.id}" title="Delete" class="btn btn-danger">Delete</button>-->
+<!--                                            </form>-->
+<!--                                        </td>-->
+<!--                                        <td class="column-5" th:text="${'₹'+cartItem.unitPrice * cartItem.quantity}"></td>-->
+<!--                                    </tr>-->
+<!--                                    </tbody>-->
+<!--                                </table>-->
+<!--                                <hr>-->
+<!--                                <div class="checkout-button d-flex justify-content-between">-->
+<!--                                    <p>Total Price: <strong th:text="${'₹ '+grandTotal}"></strong></p>-->
+<!--                                    <a th:href="@{/checkout}" class="btn btn-primary">Proceed to Checkout</a>-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+    <!--        <div class="row mt-2">-->
+    <!--            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">-->
+    <!--                <div class="m-l-25 m-r&#45;&#45;38 m-lr-0-xl">-->
+    <!--                    <div class="wrap-table-shopping-cart">-->
+    <!--                        <table class="table-shopping-cart" th:if="${grandTotal}">-->
+    <!--                            <tr class="table_head">-->
+    <!--                                <th class="column-1">Product</th>-->
+    <!--                                <th class="column-2"></th>-->
+    <!--                                <th class="column-3">Price</th>-->
+    <!--                                <th class="column-4">Quantity</th>-->
+    <!--                                <th class="column-5">Total</th>-->
+    <!--                            </tr>-->
+    <!--                            <tr class="table_row" th:each="cartItem :  ${shoppingCart.cartItems}">-->
+    <!--                                <td class="column-1">-->
+    <!--                                    <div class="how-itemcart1">-->
+    <!--                                        <img th:src="@{${'/ProductImage/' + cartItem.product.imageUrls[0]}}" alt="IMG">-->
+    <!--                                    </div>-->
+    <!--                                </td>-->
+    <!--                                <td class="column-2" th:text="${cartItem.product.getName()}"></td>-->
+    <!--                                <td class="column-3">-->
+    <!--                                    <p th:unless="${cartItem.product.salePrice > 0}"-->
+    <!--                                       th:text="${cartItem.product.costPrice}"></p>-->
+    <!--                                    <p th:if="${cartItem.product.salePrice > 0}"-->
+    <!--                                       th:text="${cartItem.product.salePrice}"></p>-->
+    <!--                                </td>-->
+    <!--                                <td class="column-4">-->
+    <!--                                    <div class="wrap-num-product flex-w m-l-auto m-r-0">-->
+    <!--                                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">-->
+    <!--                                            <i class="fs-16 zmdi zmdi-minus"></i>-->
+    <!--                                        </div>-->
+
+    <!--                                        <input class="mtext-104 cl3 txt-center num-product" type="number"-->
+    <!--                                               name="num-product1" value="1">-->
+
+    <!--                                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">-->
+    <!--                                            <i class="fs-16 zmdi zmdi-plus"></i>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                </td>-->
+    <!--                                <form th:action="@{/update-cart}" method="post">-->
+    <!--                                    <input type="hidden" name="id" th:value="${cartItem.product.id}">-->
+    <!--                                    <input type="hidden" name="cart_item_id" th:value="${cartItem.id}">-->
+    <!--                                    <td class="quantity-box">-->
+    <!--                                        <input type="number" name="quantity" th:value="${cartItem.quantity}" size="4"-->
+    <!--                                               style="width: 4em;"-->
+    <!--                                               value="1" min="1" step="1"-->
+    <!--                                               class="c-input-text qty text">-->
+    <!--                                    </td>-->
+    <!--                                    <td class="total-pr">-->
+    <!--                                        <p th:text="'₹' + ${cartItem.unitPrice * cartItem.quantity}"></p>-->
+    <!--                                    </td>-->
+    <!--                                    <td class="action" data-title="Remove">-->
+    <!--                                        <button type="submit" name="updateButton" th:value="${cartItem.product.id}"-->
+    <!--                                                title="Update" class="btn btn-primary">Update-->
+    <!--                                        </button>-->
+    <!--                                        <button type="submit" name="deleteButton" th:value="${cartItem.product.id}"-->
+    <!--                                                title="Delete" class="btn btn-danger">Delete-->
+    <!--                                        </button>-->
+    <!--                                    </td>-->
+    <!--                                </form>-->
+    <!--                            </tr>-->
+    <!--                        </table>-->
+    <!--                    </div>-->
+
+    <!--                    <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">-->
+    <!--                        <div class="flex-w flex-m m-r-20 m-tb-5">-->
+    <!--                            <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" id="couponCodeInput"-->
+    <!--                                   type="text" placeholder="Coupon Code">-->
+    <!--                            <button class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5"-->
+    <!--                                    onclick="applyCoupon()">-->
+    <!--                                Apply coupon-->
+    <!--                            </button>-->
+    <!--                        </div>-->
+    <!--                        <a class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"-->
+    <!--                           th:href="@{/shop-checkout}">Checkout</a>-->
+    <!--                    </div>-->
+
+
+    <!--                </div>-->
+    <!--            </div>-->
+
+    <!--        </div>-->
+
+<!--</form>-->
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+</div>
+<footer th:replace="~{fragments :: footer_sec}"></footer>
+
+
+<!--===============================================================================================-->
+<script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>
+<!--===============================================================================================-->
+<script th:src="@{/vendor/animsition/js/animsition.min.js}"></script>
+<!--===============================================================================================-->
+<script th:src="@{/vendor/bootstrap/js/popper.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<!--===============================================================================================-->
+<script th:src="@{/vendor/select2/select2.min.js}"></script>
+<script>
+    $(".js-select2").each(function () {
+        $(this).select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $(this).next('.dropDownSelect2')
+        });
+    })
+</script>
+<!--==================================================================================================-->
+<script>
+    function applyCoupon() {
+        const couponCode = document.getElementById('couponCode').value;
+        const endpoint = '/coupons/validate/' + couponCode;
+
+        fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                if (data >= 0) {
+                    const totalPriceElement = document.getElementById('total_price');
+                    const totalPrice = parseFloat(totalPriceElement.innerText);
+                    const discountedPrice = totalPrice - ((data / 100) * totalPrice);
+                    totalPriceElement.innerText = discountedPrice;
+                } else {
+                    alert('Invalid coupon code. Please try again.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
+
+<!--===============================================================================================-->
+<script th:src="@{/vendor/MagnificPopup/jquery.magnific-popup.min.js}"></script>
+<!--===============================================================================================-->
+<script th:src="@{/vendor/perfect-scrollbar/perfect-scrollbar.min.js}"></script>
+<script>
+    $('.js-pscroll').each(function () {
+        $(this).css('position', 'relative');
+        $(this).css('overflow', 'hidden');
+        var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+        });
+
+        $(window).on('resize', function () {
+            ps.update();
+        })
+    });
+</script>
+<!--===============================================================================================-->
+<script th:src="@{/js/main.js}"></script>
+
+</body>
+</html>
+

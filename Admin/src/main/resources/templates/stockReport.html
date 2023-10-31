@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments::header}"></head>
+<body id="page-top">
+<div id="wrapper">
+    <!-- Sidebar -->
+    <ul th:replace="~{fragments::sidebar}"></ul>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <!-- Topbar -->
+            <nav th:replace="~{fragments::top-navbar}"></nav>
+            <div class="container-fluid">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Stock Report</h1>
+                </div>
+                <br>
+                <div class="pb-4">
+                    <button id="exportToPDF" class="export-button" onclick="generatePDF()">Export to PDF</button>
+                    <button id="exportToCSV" class="export-button">Export to CSV</button>
+                </div>
+                <!-- Your filter form for stock report -->
+                <form method="GET" th:action="@{/stockReport/filter}">
+                    <label for="category">Select Category:</label>
+                    <select id="category" name="category">
+                        <!-- Add options for categories -->
+                    </select>
+                    <button type="submit" class="filter-button">Filter Data</button>
+                </form>
+                <div th:if="${size == 0}">
+                    <p>No stock report data yet</p>
+                </div>
+                <div th:if="${param.success}" class="text-center alert alert-success">
+                    <p th:text="${param.success}"></p>
+                </div>
+                <div th:if="${param.cancelled}" class="text-center alert alert-danger">
+                    <p th:text="${param.cancelled}"></p>
+                </div>
+                <div th:if="${param.error}" class="text-center alert alert-danger">
+                    <p>Error Message: <span th:text="${param.error}"></span></p>
+                </div>
+                <div class="mb-3"></div>
+                <table id="stockReportTable" class="table table-striped" th:if="${size > 0}">
+                    <thead>
+                    <tr>
+                        <th scope="col">Index</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Category Name</th>
+                        <th scope="col">Cost Price in Rs.</th>
+                        <th scope="col">Current Stock</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="productStock, rowStat : ${productStocks}">
+                        <td th:text="${rowStat.count}"></td>
+                        <td th:text="${productStock[1]}"></td>
+                        <td th:text="${productStock[2]}"></td>
+                        <td style="align-items: center;" th:text="${productStock[3]}"></td>
+                        <td th:text="${productStock[4]}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <footer th:replace="~{fragments :: footer}"></footer>
+    </div>
+</div>
+<a th:replace="~{fragments :: scroll}"></a>
+<div th:replace="~{fragments :: script}"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"
+        integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js"
+        integrity="sha512-OQlawZneA7zzfI6B1n1tjUuo3C5mtYuAWpQdg+iI9mkDoo7iFzTqnQHf+K5ThOWNJ9AbXL4+ZDwH7ykySPQc+A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function () {
+        $('#stockReportTable').DataTable(
+            {
+                order: [
+                    [
+                        0, 'asc'
+                    ]
+                ]
+            }
+        );
+    });
+</script>
+<script>
+    function generatePDF() {
+        const table = document.getElementById("stockReportTable");
+        const content = [];
+
+        // Extract table content
+        for (let i = 0; i < table.rows.length; i++) {
+            const row = [];
+            for (let j = 0; j < table.rows[i].cells.length; j++) {
+                row.push({text: table.rows[i].cells[j].textContent});
+            }
+            content.push(row);
+        }
+
+        // Define the document definition
+        const documentDefinition = {
+            content: [
+                {text: "Stock Report - SPECTACLES", style: "header"},
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: ["*", "*", "*", "*", "*"],
+                        body: content,
+                    },
+                },
+            ],
+            styles: {
+                header: {
+                    fontSize: 18,
+                    bold: true,
+                    alignment: "center",
+                    margin: [0, 0, 0, 20],
+                },
+                tableStyle: {
+                    fillColor: "#cceeff", // Light blue fill color
+                    margin: [0, 10, 0, 0],
+                },
+            },
+        };
+
+        pdfMake.createPdf(documentDefinition).download("StockReport_spectacle.pdf");
+    }
+</script>
+
+<script>
+    document.getElementById("exportToCSV").addEventListener("click", function () {
+        // Select the table
+        var table = document.getElementById("stockReportTable");
+
+        // Initialize an empty CSV string
+        var csv = "";
+
+        // Iterate through the table rows
+        for (var i = 0; i < table.rows.length; i++) {
+            var row = table.rows[i];
+
+            // Iterate through the table cells in the row
+            for (var j = 0; j < row.cells.length; j++) {
+                var cell = row.cells[j];
+
+                // Extract and clean the cell's text content
+                var cellText = cell.textContent.trim();
+
+                // Add the cell's content to the CSV string
+                csv += cellText;
+
+                // Add a comma as a delimiter, except for the last cell in each row
+                if (j < row.cells.length - 1) {
+                    csv += ",";
+                }
+            }
+
+            // Add a newline character to separate rows
+            csv += "\n";
+        }
+
+        // Create a data URI for the CSV content
+        var csvData = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+
+    // Create a link to

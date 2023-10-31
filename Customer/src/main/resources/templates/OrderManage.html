@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments :: html_head}"></head>
+<body class="animsition">
+<!-- Header -->
+<header th:replace="~{fragments :: header_top}"></header>
+
+<div class="container mt-5 text-uppercase" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="text-success text-center">Your Orders</h3>
+        </div>
+        <div class="table-main table-responsive">
+            <table class="table" id="orderTable">
+                <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th class="order-date">Order Date</th>
+                    <th>Delivery Date</th>
+                    <th class="price-pr">Order Status</th>
+                    <th>Total Price</th>
+                    <th class="total-pr">Payment Method</th>
+                    <th>Payment Status</th>
+                    <th>Order Tracking</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td>
+                        <p th:text="${order.id}"></p>
+                    </td>
+                    <td class="order-date">
+                        <span><b>[(${order.orderDate})]</b></span>
+                    </td>
+                    <td class="name-pr">
+                        <a th:if="${order.accept ==true}" href="#">
+                            [(${order.deliveryDate})]
+                        </a>
+                    </td>
+                    <td class="price-pr">
+                        <p th:text="${order.orderStatus}"></p>
+                    </td>
+                    <td class="total-pr">
+                        <p style="color: red">₹ [(${order.totalPrice})]</p>
+                    </td>
+                    <td class="total-pr" style="color: black">
+                        <span>[(${order.paymentMethod})]</span>
+                    </td>
+                    <td>
+                        <span th:unless="${#strings.equals(order.orderStatus, 'Cancelled')}">[(${order.paymentStatus})]</span>
+                        <span th:if="${#strings.equals(order.orderStatus, 'Cancelled')}">[(${order.orderStatus})]</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/order-tracking/{id}(id = ${order.id})}">View
+                            Order</a>
+                    </td>
+                    <td>
+                        <a th:if="${order.orderStatus=='Delivered'}"
+                           th:href="@{/return-order/{id}(id = ${order.id})}"
+                           class="button-cancel"
+                           onclick="if (!(confirm('Are you sure you want to Return this Order?'))) return false">Return</a>
+                        <a th:unless="${order.orderStatus=='Cancelled' or order.orderStatus == 'Delivered' or order.orderStatus=='Returned' }"
+                           th:href="@{/cancel-order/{id}(id = ${order.id})}"
+                           class="button-cancel"
+                           onclick="if (!(confirm('Are you sure you want to Cancel this Order?'))) return false">Cancel</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<footer th:replace="~{fragments :: footer_sec}"></footer>
+
+
+<div th:replace="~{fragments :: script}"></div>
+<script>
+    $(document).ready(function () {
+        $('#orderTable').DataTable(
+            {
+                order: [
+                    [
+                        0, 'desc'
+                    ]
+                ]
+            }
+        );
+    });
+</script>
+
+</body>
+</html>

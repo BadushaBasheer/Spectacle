@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments :: html_head}"></head>
+<style>
+    .bg {
+        background-position: center;
+        background-image: url("https://st2.depositphotos.com/4044301/5905/v/950/depositphotos_59058399-stock-illustration-sunglasses-pattern.jpg");
+        background-size: cover;
+    }
+
+    .card {
+        background-color: transparent;
+        backdrop-filter: blur(15px);
+    }
+</style>
+
+<body class="bg">
+<header th:replace="~{fragments :: header_top}"></header>
+
+<!-- Jumbotron -->
+
+<div class="px-4 py-5 px-md-5 text-center text-lg-start ">
+    <div class="container pz-5 ">
+        <div class="row gx-lg-5  align-items-center ">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="card">
+                    <div class="card-body py-5 px-md-5">
+                        <h1>REGISTER</h1>
+                        <hr>
+                        <div th:if="${param.error}">
+                            <div class="alert alert-danger">Invalid Email and Password</div>
+                        </div>
+                        <div th:if="${param.logout}">
+                            <div class="alert alert-success">You have been logged out.</div>
+                        </div>
+                        <div class="mb-5">
+                            <div th:if="${error}">
+                                <p class="alert alert-danger" th:text="${error}"></p>
+                            </div>
+                            <div th:if="${success}">
+                                <p class="alert alert-success" th:text="${success}"></p>
+                            </div>
+                            <div th:if="${passwordError}">
+                                <p class="alert alert-danger" th:text="${passwordError}"></p>
+                            </div>
+                        </div>
+                        <form method="post" th:action="@{/register-new}" th:object="${customerDto}">
+
+                            <div class="form-outline mb-4">
+                                <input type="text" class="form-control" required="" th:field="*{firstName}"
+                                       name="firstname" placeholder="First Name">
+                            </div>
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"
+                                 th:errors="*{firstName}"></div>
+
+
+                            <div class="form-outline mb-4">
+                                <input type="text" class="form-control" required="" th:field="*{lastName}"
+                                       name="lastname" placeholder="Last Name">
+                            </div>
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}"
+                                 th:errors="*{lastName}"></div>
+
+
+                            <div class="form-outline mb-4">
+                                <input type="email" class="form-control" required="" th:field="*{username}"
+                                       name="username" placeholder="Email/Username">
+                            </div>
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('username')}"
+                                 th:errors="*{username}"></div>
+
+
+                            <div class="form-outline mb-4">
+                                <input type="tel" class="form-control" required="" th:field="*{phoneNumber}"
+                                       name="phoneNumber" placeholder="Phone Number">
+                            </div>
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('phoneNumber')}"
+                                 th:errors="*{phoneNumber}"></div>
+
+                            <div class="form-outline mb-4">
+                                <input required="" class="form-control" type="password" th:field="*{password}"
+                                       name="password" placeholder="Password">
+                            </div>
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}"
+                                 th:errors="*{password}"></div>
+
+
+                            <div class="form-outline mb-4">
+                                <input required="" class="form-control" type="password" th:field="*{repeatPassword}"
+                                       name="repeatPassword" placeholder="Confirm password">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 mb-4">
+                                    <div class="form-outline">
+                                        <input type="text" name="referralCode" th:field="*{referralCode}" placeholder="Referral Code" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-secondary" id="checkReferralCodeButton" style="border-radius: 5px;">Check Referral Code</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-block mb-4" name="register">SIGN UP
+                                </button>
+                            </div>
+
+                            <div class="text-muted text-center">Already have an account? <a th:href="@{/login}">Sign in
+                                now</a></div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+<footer th:replace="~{fragments :: footer_sec}"></footer>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(document).ready(function () {
+        console.log("start")
+        function checkReferralCode() {
+            var referralCode = $("#referralCode").val(); // Get the entered referral code
+            console.log(referralCode)
+            // Send an AJAX request to your server to check the referral code
+            $.ajax({
+                type: "POST",
+                url: '/user/checkReferralCode',
+                data: { referralCode: referralCode },
+                success: function (response) {
+                    if (response === "valid") {
+                        alert("Referral code is valid. Thank you for accepting the Referral");
+                    } else if (response === "invalid") {
+                        alert("Referral code is not associated with any account.");
+                    } else {
+                        alert("An error occurred while checking the referral code.");
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while checking the referral code.");
+                }
+            });
+        }
+        console.log("referralCode");
+
+        $("#checkReferralCodeButton").click(function (event) {
+            event.preventDefault();
+            checkReferralCode();
+        });
+    });
+</script>
+
+<div th:replace="~{fragments :: script}"></div>
+
+</body>
+</html>

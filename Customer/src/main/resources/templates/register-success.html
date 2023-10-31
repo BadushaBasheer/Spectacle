@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zxx" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Key Login Form">
+    <link rel="stylesheet" th:href="@{css/login-css/style.css}" type="text/css" media="all">
+    <link rel="stylesheet" th:href="@{css/login-fonts/font-awesome.min.css}" type="text/css" media="all">
+    <link href="//fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700,700i" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Mukta:200,300,400,500,600,700,800" rel="stylesheet">
+</head>
+<body>
+<section class="main">
+    <div class="layer">
+        <div class="bottom-grid">
+            <div class="logo">
+                <h1> <a th:href="@{/index}"><span class="fa fa-key"></span> SPECTACLE</a></h1>
+            </div>
+            <div class="links">
+                <ul class="links-unordered-list">
+                    <li class="">
+                        <a th:href="@{/index}" class="">Home</a>
+                    </li>
+                    <li class="active">
+                        <a th:href="@{/login-2}" class="">Login</a>
+                    </li>
+                    <li class="">
+                        <a th:href="@{/register}" class="">Register</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">Contact</a>
+                    </li>
+                    <li class="">
+                        <a th:href="@{/about}" class="">About Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-w3ls">
+            <div class="text-center icon">
+                <span class="fa fa-html5">You have registered Successfully Registered as a Customer</span>
+            </div>
+            <div class="content-bottom">
+                <form method="post" th:action="@{/do-login}">
+
+                </form>
+            </div>
+        </div>
+        <div class="bottom-grid1">
+            <div class="links">
+                <ul class="links-unordered-list">
+                    <li class="">
+                        <a href="#" class="">About Us</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">Privacy Policy</a>
+                    </li>
+                    <li class="">
+                        <a href="#" class="">Terms of Use</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="copyright">
+                <p>© 2023 Key. All rights reserved
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script>addEventListener("load", function () {
+    setTimeout(hideURLbar, 0);
+}, false);
+function hideURLbar() {
+    window.scrollTo(0, 1);
+}
+</script>
+</html>

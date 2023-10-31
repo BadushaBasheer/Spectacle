@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments :: html_head}"></head>
+<body class="animsition">
+<header th:replace="~{fragments :: header_top}"></header>
+
+<div class="container">
+    <div class="col-lg-6 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h1 class="text-center">Payment Details</h1>
+            </div>
+            <div class="card-body">
+                <form class="row login-form" th:action="@{/shop-checkout}" method="get" th:object="${name}"
+                      onsubmit="return handlePayment()">
+                    <div class="form-group">
+                        <label for="paymentMethod">Select Payment Method:</label>
+                        <select name="paymentMethod" id="paymentMethod" th:value="${paymentMethod}"
+                                class="form-control">
+                            <option value="cashOnDelivery">Cash on Delivery</option>
+                            <option value="payNow">Pay Now</option>
+                        </select>
+                    </div>
+                    <div class="mt-3">
+                        <input type="hidden" name="totalPrice" id="totalPrice" th:value="${cartTotalPrice}">
+                        <h3> The total price of cart is <span id="total_price" th:text="${cartTotalPrice}"></span></h3>
+                    </div>
+                    <button type="submit"
+                            class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
+                    >Confirm and Place Order
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer th:replace="~{fragments :: footer_sec}"></footer>
+
+
+<div th:replace="~{fragments :: script}"></div>
+</body>
+</html>

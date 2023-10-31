@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments::header}"></head>
+<body id="page-top">
+<div id="wrapper">
+    <ul th:replace="~{fragments::sidebar}"></ul>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <nav th:replace="~{fragments::top-navbar}"></nav>
+            <div class="container-fluid">
+                <br>
+                <div th:if="${size == 0}">
+                    <p>No products in shop</p>
+                </div>
+                <div th:if="${success}" class="text-center alert alert-success">
+                    <p th:text="${success}"></p>
+                </div>
+                <div th:if="${error}" class="text-center alert alert-danger">
+                    <p th:text="${error}"></p>
+                </div>
+                <div class="mb-3"></div>
+                <div class="container mt-10 p-30 text-uppercase">
+                  <h2 class="mt-2">Create Coupon</h2>
+                    <hr>
+                    <form th:action="@{/coupons/save}" th:object="${coupon}" method="post">
+                        <div th:if="${#fields.hasErrors('*')}">
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <li th:each="error : ${#fields.errors('*')}" th:text="${error}"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label" for="CouponCode">code</label>
+                            <div class="col-md-4">
+                                <input id="CouponCode" th:field="*{code}" name="code"
+                                       class="form-control input-md" type="text" required pattern="[A-Za-z0-9]+">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label" for="CouponDescription">Description</label>
+                            <div class="col-md-4">
+                                <input id="CouponDescription" th:field="*{description}" name="description"
+                                       class="form-control input-md" type="text" required
+                                       pattern="[A-Za-z0-9%]+( [A-Za-z0-9%]+)*">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label" for="CouponOff">Percentage Off</label>
+                            <div class="col-md-4">
+                                <input id="CouponOff" th:field="*{offPercentage}" name="offPercentage"
+                                       class="form-control input-md" type="text" required max="100" min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label" for="CouponMax">Max Off in Rs.</label>
+                            <div class="col-md-4">
+                                <input id="CouponMax" th:field="*{maxOff}" name="maxOff"
+                                       class="form-control input-md" type="number" required min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label" for="minOrderAmount">Minimum Order Amount</label>
+                            <div class="col-md-4">
+                                <input id="minOrderAmount" th:field="*{minOrderAmount}" name="minOrderAmount"
+                                       class="form-control input-md" type="number" required min="1">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label" for="CouponDate">Expiry Date</label>
+                            <div class="col-md-4">
+                                <input id="CouponDate" th:min="${minimumDate}" name="expiryDate"
+                                       class="form-control input-md" type="date" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-4 control-label" for="CouponCount">Count</label>
+                            <div class="col-md-4">
+                                <input id="CouponCount" th:min="1" name="count"
+                                       class="form-control input-md" type="number" required>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                            <a th:href="@{/coupons}" class="btn btn-danger">Close</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="~{fragments :: footer}"></footer>
+    </div>
+</div>
+<a th:replace="~{fragments :: scroll}"></a>
+<div th:replace="~{fragments :: script}"></div>
+<script th:src="@{/js/categories.js}"></script>
+</body>
+</html>

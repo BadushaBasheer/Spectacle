@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments :: html_head}"></head>
+<body class="animsition">
+<!-- Header -->
+<header th:replace="~{fragments :: header_top}"></header>
+<main class="container mt-5">
+    <section>
+        <div th:if="${param.success}" class="text-center alert alert-success">
+            <p th:text="${param.success}"></p>
+        </div>
+        <div th:if="${check}" style="display: flex; flex-direction: column; align-items: center;">
+            <p class="text-center" th:text="${check}"></p>
+            <a th:href="@{/product}">
+                <button class="btn btn-primary">Continue Shopping</button>
+            </a>
+        </div>
+        <div class="row isotope-grid">
+            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item  text-uppercase"
+                 th:each="wishlist : ${wishlists}">
+                <!-- Block2 -->
+                <div class="block2 ">
+                    <div class="block2-pic zmdi-hc-border-custom  hov-img0">
+                        <img th:src="@{|/ProductImage/${wishlist.product.imageUrls[0]}|}" alt="IMG-PRODUCT">
+                        <a th:href="@{/product-view/{id}(id=${wishlist.product.id})}"
+                           class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15">
+                            View
+                        </a>
+                    </div>
+                    <div class="block2-txt flex-w flex-t p-t-14">
+                        <div class="block2-txt-child1 flex-col-l">
+                            <a th:href="@{/product-view/{id}(id=${wishlist.product.id})}"
+                               class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
+                               th:text="${wishlist.product.name}"></a>
+                            <span class="stext-105 cl3" th:text="'₹' + ${wishlist.product.costPrice}"></span>
+                        </div>
+                        <div class="block2-txt-child2 flex-r p-t-3">
+                            <form th:action="@{/add-to-cart}" method="post"
+                                  style="font-size: 24px; padding-right: 15px;">
+                                <input type="hidden" name="id" th:value="${wishlist.product.id}"/>
+                                <div class="d-flex">
+                                    <button type="submit" class="zmdi zmdi-shopping-cart"></button>
+                                </div>
+                            </form>
+                            <td class="action" data-title="Remove">
+                                <a class="zmdi zmdi-delete " style="font-size: 24px; padding-right: 15px;color: black;"
+                                   th:href="@{/delete-wishlist/{id}(id=${wishlist.id})}"></a>
+                            </td>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{fragments :: footer_sec}"></footer>
+<script>
+    function confirmDelete(productId) {
+        if (confirm("Are you sure you want to delete this item from your wishlist?")) {
+            window.location.href = '/delete-wishlist/' + productId;
+        }
+    }
+</script>
+<div th:replace="~{fragments :: script}"></div>
+</body>
+</html>

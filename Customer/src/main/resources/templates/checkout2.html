@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments :: html_head}">
+
+    <style>
+        .table_head th {
+            text-align: center;
+        }
+        .login_form_inner {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: inline-block;
+            width: 100px; /* Adjust the width as needed */
+            text-align: right;
+        }
+        input {
+            width: 200px; /* Adjust the width as needed */
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+
+        .address-list label {
+            display: block;
+            margin: 10px 0;
+            text-align: left; /* Left-align the address labels */
+        }
+
+        /* Center the content within the container */
+        .login_form_inner {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style the form inputs */
+        .login_form input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Style the submit button */
+        .login_form button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login_form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Center the content within the container */
+        .login_form_inner {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style the select dropdown */
+        .login_form select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Style the total price */
+        .login_form h3 {
+            margin: 15px 0;
+            font-size: 18px;
+        }
+
+        /* Style the submit button */
+        .login_form button {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login_form button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body class="animsition">
+
+<header th:replace="~{fragments :: header_top}"></header>
+
+
+
+<!-- breadcrumb -->
+<div class="container">
+    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+        <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+            Home
+            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+        </a>
+
+        <span class="stext-109 cl4">
+				Checkout
+			</span>
+    </div>
+</div>
+
+
+<!-- Checkout -->
+<div class="container mt-5">
+    <div class="col-lg-6 text-center" style="   margin: auto">
+        <div class="login_form_inner my-custom-form">
+            <form th:action="@{/save-address}" method="post" th:object="${addressDto}">
+
+                <div class="form-group">
+                    <label for="addressLine1">Address Line 1</label>
+                    <input type="text"  th:field="*{address_line_1}" class="form-control" id="addressLine1" name="addressLine1" required="">
+                </div>
+                <div class="form-group">
+                    <label for="addressLine2">Address Line 2</label>
+                    <input type="text"  th:field="*{address_line_2}" class="form-control" id="addressLine2" name="addressLine2" required="">
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text"  th:field="*{city}" class="form-control" id="city" name="city" required="">
+                </div>
+                <div class="form-group">
+                    <label for="pincode">Pincode</label>
+                    <input type="text"  th:field="*{pincode}" class="form-control" id="pincode" name="pincode" required="">
+                </div>
+                <div class="form-group">
+                    <label for="district">District</label>
+                    <input type="text"  th:field="*{district}" class="form-control" id="district" name="district" required="">
+                </div>
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <input type="text"  th:field="*{state}" class="form-control" id="state" name="state" required="">
+                </div>
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <input type="text" th:field="*{country}" class="form-control" id="country" name="country" required="">
+                </div>
+                <button type="submit" class="btn btn-primary">Save Address</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-lg-6 text-center" style="margin: auto">
+        <div class="login_form_inner">
+            <h1>Add a new address</h1>
+            <form class="row login_form row justify-content-center" th:action="@{/checkout/addAddress}" method="post" >
+                <div>
+                    <input required type="text" name="house_no" placeholder="House No.">
+                </div>
+                <div>
+                    <input required type="text" name="street" placeholder="Street">
+                </div>
+                <div>
+                    <input required type="text" name="state" placeholder="State">
+                </div>
+                <div>
+                    <input required type="number" name="postalcode" placeholder="Postal Code">
+                </div>
+                <div>
+                    <input required type="text" name="country" placeholder="Country">
+                </div>
+                <button type="submit">Add New Address</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-lg-6 text-center" style="margin: auto">
+        <div class="login_form_inner">
+            <label for="couponCode">Coupon Code:</label>
+            <input type="text" id="couponCode" name="couponCode">
+            <button type="button" onclick="applyCoupon()">Apply Coupon</button>
+        </div>
+    </div>
+</div>
+<div class="toggle_info mt-20">
+                        <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a
+                                href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
+</div>
+<div class="panel-collapse collapse coupon_form" id="coupon">
+    <div class="panel-body">
+        <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+        <form method="post" th:action="@{/check-out/apply-coupon}">
+            <div class="form-group">
+                <input type="text" th:value="${param.couponCode}" placeholder="Enter Coupon Code..."
+                       name="couponCode">
+            </div>
+            <div class="form-group">
+                <button class="btn  btn-md" type="submit" name="action"
+                        th:value="${param.couponCode == null ? 'apply' : 'remove'}"
+                        th:text="${param.couponCode == null ? 'Apply Coupon' : 'Remove Coupon'}"></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-lg-6 text-center" style="margin: auto">
+        <div class="login_form_inner">
+            <h1>Payment Details</h1>
+            <form class="row login_form justify-content-center mt-2" th:action="@{/checkout/confirmOrder}" method="post" onsubmit="return handlePayment()">
+                <div>
+                    <label for="paymentMethod" style="display: inline;">Select Payment Method:</label>
+                    <select name="paymentMethod" id="paymentMethod" th:value="${paymentMethod}" style="display: inline;">
+                        <option value="cashOnDelivery">Cash on Delivery</option>
+                        <option value="payNow">Razor Pay</option>
+                    </select>
+                </div>
+
+                <!--                <div class="coupon col-lg-4">-->
+                <!--                    <div class="col-lg-4 mb-25">-->
+                <!--                        <h5>Coupon</h5>-->
+                <!--                    </div>-->
+                <!--                    <div>-->
+                <!--                        <select name="couponId" id="couponId" onchange="applyCoupon()" th:field="*{coupons}" class="form-control">-->
+                <!--                            <option value="0">No Coupon</option>-->
+                <!--                            <option th:each="coupon : ${coupons}"-->
+                <!--                                    th:value="${coupon.id}"-->
+                <!--                                    th:text="${coupon.code}"></option>-->
+                <!--                        </select>-->
+                <!--                    </div>-->
+
+                <!--                </div>-->
+
+                <div >
+                    <h3> The total price of cart is ₹ <span id="total_price" th:text="${totalprice}"></span></h3>
+                </div>
+                <div>
+                    <button type="submit">Confirm and Place Order</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg3 p-t-75 p-b-32">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-lg-3 p-b-50">
+                <h4 class="stext-301 cl0 p-b-30">
+                    Categories
+                </h4>
+
+                <ul>
+                    <li class="p-b-10">
+                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                            Women
+                        </a>
+                    </li>
+
+                    <li class="p-b-10">
+                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                            Men
+                        </a>
+                    </li>
+
+                    <li class="p-b-10">
+                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                            Shoes
+                        </a>
+                    </li>
+
+                    <li class="p-b-10">
+                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                            Watches
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-6 col-lg-3 p-b-50">
+                <h4 class="stext-301 cl0 p-b-30">
+                    Help
+                </h4>
+
+                <ul>
+                    <li class="p-b-10">
+                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                            Track Order
+                        </a>
+                    </li>
+
+                    <li class="p-b-10">
+                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                            Returns
+                        </a>
+                    </li>
+
+                    <li class="p-b-10">
+                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                            Shipping
+                        </a>
+                    </li>
+
+                    <li class="p-b-10">
+                        <a href="#" class="stext-107 cl7 hov-cl1 trans-04">
+                            FAQs
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-6 col-lg-3 p-b-50">
+                <h4 class="stext-301 cl0 p-b-30">
+                    GET IN TOUCH
+                </h4>
+
+                <p class="stext-107 cl7 size-201">
+                    Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us on (+1) 96 716 6879
+                </p>
+
+                <div class="p-t-27">
+                    <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+
+                    <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+
+                    <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                        <i class="fa fa-pinterest-p"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3 p-b-50">
+                <h4 class="stext-301 cl0 p-b-30">
+                    Newsletter
+                </h4>
+
+                <form>
+                    <div class="wrap-input1 w-full p-b-4">
+                        <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email" placeholder="email@example.com">
+                        <div class="focus-input1 trans-04"></div>
+                    </div>
+
+                    <div class="p-t-18">
+                        <button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
+                            Subscribe
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="p-t-40">
+            <div class="flex-c-m flex-w p-b-18">
+                <a href="#" class="m-all-1">
+                    <img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
+                </a>
+
+                <a href="#" class="m-all-1">
+                    <img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
+                </a>
+
+                <a href="#" class="m-all-1">
+                    <img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
+                </a>
+
+                <a href="#" class="m-all-1">
+                    <img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
+                </a>
+
+                <a href="#" class="m-all-1">
+                    <img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
+                </a>
+            </div>
+
+            <p class="stext-107 cl6 txt-center">
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+            </p>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    function handlePayment() {
+        const paymentMethod = document.getElementById("paymentMethod").value;
+        console.log(" " +paymentMethod);
+        if (paymentMethod === "payNow") {
+            console.log("payment method is payNOw");
+            initiateRazorpayPayment();
+            return false;
+        }
+        return true;
+    }
+
+    function confirmOrder(razorpay_payment_id) {
+        console.log("Inside confirmOrder");
+        $.ajax({
+            url: '/checkout/confirmOrder',
+            type: 'POST',
+            data: {
+                paymentMethod: 'payNow',
+                paymentId: razorpay_payment_id
+            },
+            success: function (data) {
+                console.log('Order confirmed successfully:', data);
+                // window.location.href = '/OrderConfirmed.html';
+            },
+            error: function (error) {
+                console.error('Error confirming order:', error);
+                alert('Error confirming order');
+            }
+        });
+    }
+
+    function initiateRazorpayPayment() {
+        console.log("Initiate razorpay pay payNOw");
+        let amount = parseFloat($('#total_price').text());
+        console.log(amount)
+        if(amount =='' || amount == null ){
+            alert("Amount is null, your cart empty");
+            return;
+        }
+        $.ajax(
+            {
+                url:'/payNow',
+                data : JSON.stringify({amount : amount,info:'order_request'}),
+                contentType : 'application/json',
+                type:'POST',
+                dataType:'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('[name="_csrf"]').attr('content')
+                },
+                success:function (response){
+                    console.log(response)
+                    if (response.status === "created"){
+                        let options ={
+                            key:'rzp_test_p5dhh6XFv0f6Rs',
+                            amount:response.amount,
+                            currency:'INR',
+                            name:'Coza Store',
+                            description:'Pay for your order',
+                            image:"https://th.bing.com/th/id/OIP.ESB8d5xKbiIXELiU9EIjAQHaBk?pid=ImgDet&rs=1",
+                            order_id:response.id,
+                            handler:function (response){
+                                console.log(response.razorpay_payment_id)
+                                console.log(response.razorpay_order_id)
+                                console.log(response.razorpay_signature)
+                                console.log('payment successful')
+                                console.log('Calling confirmOrder');
+                                confirmOrder(response.razorpay_payment_id);
+                                alert("Congrats, Payment is successful!!")
+                            },
+                            prefill:{
+                                name:"Suraj S",
+                                email:"suraj14o99@gmail.com",
+                                contact:"8086027483",
+                            },
+                            notes:{
+                                address: "Coza Store"
+                            },
+                            theme:{
+                                color:"#3399cc"
+                            }
+                        }
+                        let rzp = new Razorpay(options);
+                        rzp.open();
+                    }
+                },
+                error:function (error){
+                    console.log(error)
+                    alert("something went wrong")
+                }
+
+            }
+        )
+    }
+
+    let couponApplied = false;
+    function applyCoupon() {
+        if (couponApplied) {
+            alert('Only one coupon can be applied per transaction.');
+            return;
+        }
+        const couponCode = document.getElementById('couponCode').value;
+        const totalPrice = parseFloat(document.getElementById('total_price').innerText);  // Get total price from the DOM
+        const endpoint = `/coupons/validate/${couponCode}?totalPrice=${totalPrice}`;  // Include totalPrice as a query parameter
+        console.log(couponCode)
+        console.log(totalPrice)
+        console.log("Inside apply Coupon");
+
+        fetch(endpoint)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data >= 0) {
+                    const totalPriceElement = document.getElementById('total_price');
+                    const discountedPrice = totalPrice - ((data / 100) * totalPrice);
+                    totalPriceElement.innerText = discountedPrice;
+                    couponApplied = true
+                    showToast();
+                    // alert('Coupon applied succesfully');
+                } else {
+                    alert('Invalid coupon code. Please try again.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    // function verifyPayment(payment){
+    //     $.ajax({
+    //         url:'',
+    //         method: 'post',
+    //         data:JSON.stringify(payment),
+    //         contentType: 'application/json',
+    //         dataType:'json',
+    //         success:(response)=>{
+    //             if(response.status){
+    //                 alert("congrats!! Payment successful");
+    //                 location.href='/'
+    //             } else{
+    //                 alert("Payment failed!")
+    //             }
+    //         }
+    //     });
+    // }
+
+</script>
+
+<!--===============================================================================================-->
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/bootstrap/js/popper.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/select2/select2.min.js"></script>
+<script>
+    $(".js-select2").each(function(){
+        $(this).select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $(this).next('.dropDownSelect2')
+        });
+    })
+</script>
+<!--===============================================================================================-->
+<script src="vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<!--===============================================================================================-->
+<script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<!--<script>-->
+<!--    function applyCoupon(){-->
+<!--        let couponId = document.getElementById("couponId").value;-->
+
+<!--        var finalAmount = document.getElementById("finalAmount");-->
+<!--        let cartTotal = document.getElementById("cartTotal").value;-->
+<!--        if(couponId>0){-->
+<!--            //calculate cartTotal-->
+<!--            $.ajax({-->
+<!--                url:'/user_home/coupon/checkCartAmount',-->
+<!--                data:JSON.stringify({"cartTotal":cartTotal,"couponId":couponId}),-->
+<!--                contentType:'application/json',-->
+<!--                type:'POST',-->
+<!--                dataType:'json',-->
+<!--                success:function(response){-->
+<!--                    console.log(response);-->
+<!--                    finalAmount.value=response-->
+<!--                },error:function(error){-->
+<!--                    console.log(error);-->
+<!--                }-->
+<!--            });-->
+
+<!--        }else{-->
+<!--            alert("No coupon selected");-->
+<!--            finalAmount.value=cartTotal;-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<script>
+    $('.js-pscroll').each(function(){
+        $(this).css('position','relative');
+        $(this).css('overflow','hidden');
+        var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+        });
+
+        $(window).on('resize', function(){
+            ps.update();
+        })
+    });
+</script>
+<!--===============================================================================================-->
+<script src="js/main.js"></script>
+
+</body>
+</html>

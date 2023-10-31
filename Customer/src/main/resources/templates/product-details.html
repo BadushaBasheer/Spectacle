@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments :: html_head}">
+    <title></title>
+</head>
+
+<body class="animsition">
+
+<!-- Header -->
+<header th:replace="~{fragments :: header_top}"></header>
+
+<!-- Product Detail -->
+<section class="sec-product-detail bg0 p-t-65 p-b-60 text-uppercase">
+    <div class="container">
+        <div class="container">
+            <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+                <a href="index.html" th:href="@{/index}" class="stext-109 cl8 hov-cl1 trans-04">
+                    Home
+                    <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+                </a>
+
+                <a href="product.html" th:href="@{/product}" class="stext-109 cl8 hov-cl1 trans-04">
+                    product
+                    <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+                </a>
+                <span class="stext-109 cl4" th:text="${products.getName()}"></span>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6 col-lg-7 p-b-30">
+                <div class="p-l-25 p-r-30 p-lr-0-lg">
+                    <div class="wrap-slick3 flex-sb flex-w">
+                        <div class="wrap-slick3-dots"></div>
+                        <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+
+                        <div class="slick3 gallery-lb zmdi-hc-border ">
+                            <div class="item-slick3"
+                                 th:attr="data-thumb='/user/ProductImage/' + ${products.imageUrls[0]}">
+                                <div class="wrap-pic-w pos-relative">
+                                    <img th:src="@{${'/ProductImage/' + products.imageUrls[0]}}" alt="IMG-PRODUCT">
+
+                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                       th:href="@{${'/ProductImage/' + products.imageUrls[0]}}">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="item-slick3"
+                                 th:attr="data-thumb='/user/ProductImage/' + ${products.imageUrls[1]}">
+                                <div class="wrap-pic-w pos-relative">
+                                    <img th:src="@{${'/ProductImage/' + products.imageUrls[1]}}" alt="IMG-PRODUCT">
+
+                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                       th:href="@{${'/ProductImage/' + products.imageUrls[1]}}">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="item-slick3"
+                                 th:attr="data-thumb='/user/ProductImage/' + ${products.imageUrls[2]}">
+                                <div class="wrap-pic-w pos-relative">
+                                    <img th:src="@{${'/ProductImage/' + products.imageUrls[2]}}" alt="IMG-PRODUCT">
+
+                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                       th:href="@{${'/ProductImage/' + products.imageUrls[2]}}">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-5 p-b-30">
+                <div class="p-r-50 p-t-5 p-lr-0-lg">
+                    <h4 class="ltext-101 cl2 js-name-detail p-b-14" th:text="${products.getName()}"></h4>
+                    <span class="mtext-106 cl2" th:text="'₹ '+ ${products.getCostPrice()}"></span>
+                    <p class="mtext-102 cl3 p-t-23" th:text="${products.getDescription()}"></p>
+                    <p class="stext-101 cl4 p-t-23 text-danger"
+                       th:text="'Available Stock:  '+ ${products.getCurrentQuantity()}"></p>
+                    <th:block th:unless="${products.currentQuantity > 0}">
+                        <span>Out of Stock</span>
+                    </th:block>
+                    <div class="p-t-33">
+                        <div class="flex-w flex-r-m p-b-10">
+                            <div class="size-204 flex-w flex-m respon6-next">
+                                <form th:action="@{/add-to-cart}" method="post">
+                                    <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                            <i class="fs-16 zmdi zmdi-minus"></i>
+                                        </div>
+                                        <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                               name="quantity" id="quantity" value="1" min="0" step="1">
+
+                                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                            <i class="fs-16 zmdi zmdi-plus"></i>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="id" th:value="${products.id}"/>
+                                    <div class="product-extra-link2">
+                                        <button id="addToCartButton" type="submit"
+                                                class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                            Add to cart
+                                        </button>
+                                        <!--                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/add-wishlist/{id} (id=${products.id})}"><i class="fi-rs-heart"></i></a>-->
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--                    <a th:href="@{/wish-list}"-->
+                    <!--                           class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"-->
+                    <!--                           data-tooltip="Add to Wishlist">-->
+                    <!--                          <i class="zmdi zmdi-favorite"></i>-->
+                    <!--                        </a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+</div>
+
+<footer th:replace="~{fragments :: footer_sec}"></footer>
+
+<div th:replace="~{fragments :: script}"></div>
+
+
+</body>
+</html>

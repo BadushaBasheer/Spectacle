@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments :: html_head}"></head>
+    <style>
+        .bg{
+            background-position: center ;
+            background-image: url("https://st.depositphotos.com/1767750/2388/v/950/depositphotos_23888703-stock-illustration-seamless-glasses-pattern-in-vintage.jpg");
+            background-size: cover;
+        }
+        .card{
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+        }
+    </style>
+
+<body class="bg">
+<header th:replace="~{fragments :: header_top}"></header>
+
+    <!-- Jumbotron -->
+
+        <div class="px-4 py-5 px-md-5 text-center text-lg-start ">
+        <div class="container pz-5 mt-5 ">
+            <div class="row gx-lg-5  align-items-center ">
+                <!--                <div class="col-lg-6 mb-5 mb-lg-0">-->
+                <!--                    <h1 class="my-5 display-3">-->
+                <!--                        Play by the rules,-->
+                <!--                        <hr>-->
+                <!--                        <span class="text-primary">But be ferocious</span>-->
+                <!--                    </h1>-->
+                <!--                </div>-->
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="card">
+                        <div class="card-body py-5 px-md-5">
+                            <h1>LOGIN</h1>
+                            <hr>
+                            <div th:if="${param.error}">
+                                <div class="alert alert-danger">Invalid Email and Password</div>
+                            </div>
+                            <div th:if="${param.logout}">
+                                <div class="alert alert-success">You have been logged out.</div>
+                            </div>
+                            <form method="POST" th:action="@{/do-login}">
+                                <!-- Email input -->
+                                <div class="form-outline mb-4">
+                                    <input type="text" name="username" class="form-control" required/>
+                                    <label class="form-label">Email address</label>
+
+                                </div>
+                                <!-- Password input -->
+                                <div class="form-outline mb-4">
+                                    <input type="password" name="password" class="form-control" required/>
+                                    <label class="form-label">Password</label>
+                                </div>
+                                <!-- Submit button -->
+                                <button type="submit" class="btn btn-success btn-block mb-4">
+                                    Sign in
+                                </button>
+                                <div class="d-flex justify-content-between">
+                                    <div class="login_footer form-group">
+                                        <a class="text-muted" th:href="@{/register}">Not Register Yet?</a>
+                                    </div>
+                                    <div class="login_footer form-group">
+                                        <a class="text-muted" th:href="@{/forgot-password}">Forget Password?</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Jumbotron -->
+<!-- Footer -->
+<footer th:replace="~{fragments :: footer_sec}"></footer>
+
+
+<div th:replace="~{fragments :: script}"></div>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{fragments :: html_head}"></head>
+<body class="animsition">
+<!-- Header -->
+<header th:replace="~{fragments :: header_top}"></header>
+
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 m-auto">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="address-container border border-danger rounded p-4 p-md-5 shadow-lg mb-md-5 mb-lg-0 mb-sm-5">
+                            <div class="padding_eight_all bg-white">
+                                <div class="heading_s1 text-center">
+                                    <h2 class="mb-4">Add Address</h2>
+                                </div>
+                                <form th:action="@{/save-address}" method="post" th:object="${addressDto}">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="addressLine1" class="mb-2">Address Line 1</label>
+                                            <input type="text" th:field="*{address_line_1}"
+                                                   class="form-control rounded-pill" id="addressLine1"
+                                                   name="addressLine1" required="">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="addressLine2" class="mb-2">Address Line 2</label>
+                                            <input type="text" th:field="*{address_line_2}"
+                                                   class="form-control rounded-pill" id="addressLine2"
+                                                   name="addressLine2" required="">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="city" class="mb-2">City</label>
+                                            <input type="text" th:field="*{city}" class="form-control rounded-pill"
+                                                   id="city" name="city" required="">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="pincode" class="mb-2">Pincode</label>
+                                            <input type="text" th:field="*{pincode}" class="form-control rounded-pill"
+                                                   id="pincode" name="pincode" required="">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="district" class="mb-2">District</label>
+                                            <input type="text" th:field="*{district}" class="form-control rounded-pill"
+                                                   id="district" name="district" required="">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="state" class="mb-2">State</label>
+                                            <input type="text" th:field="*{state}" class="form-control rounded-pill"
+                                                   id="state" name="state" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="country" class="mb-2">Country</label>
+                                        <input type="text" th:field="*{country}" class="form-control rounded-pill"
+                                               id="country" name="country" required="">
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary rounded-pill btn-lg">Save Address
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Footer -->
+<footer th:replace="~{fragments :: footer_sec}"></footer>
+
+
+<div th:replace="~{fragments :: script}"></div>
+
+</body>
+</html>

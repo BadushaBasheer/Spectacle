@@ -1,0 +1,181 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="https://www.thymeleaf.org/">-->
+<!--<head th:replace="~{fragments::header}">-->
+<!--</head>-->
+<!--<body class="bg">-->
+<!--<div class="container">-->
+<!--    <div class="card o-hidden border-0 shadow-lg my-5">-->
+<!--        <div class="card-body p-0">-->
+<!--            &lt;!&ndash; Nested Row within Card Body &ndash;&gt;-->
+<!--            <div class="row justify-content-center">-->
+<!--                <div class="col-lg-7">-->
+<!--                    <div class="p-5">-->
+<!--                        <div class="text-center">-->
+<!--                            <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>-->
+<!--                        </div>-->
+<!--                        <div th:if="${emailError}">-->
+<!--                            <p class="alert alert-danger" th:text="${emailError}"></p>-->
+<!--                        </div>-->
+<!--                        <div th:if="${errors}">-->
+<!--                            <p class="alert alert-danger" th:text="${errors}"></p>-->
+<!--                        </div>-->
+<!--                        <div th:if="${success}">-->
+<!--                            <p class="alert alert-success" th:text="${success}"></p>-->
+<!--                        </div>-->
+<!--                        <div th:if="${passwordError}">-->
+<!--                            <p class="alert alert-danger" th:text="${passwordError}"></p>-->
+<!--                        </div>-->
+
+
+<!--                        <form th:action="@{/register-new}" th:object="${adminDto}" method="POST">-->
+<!--                            <div class="form-group row">-->
+<!--                                <div class="col-sm-6 mb-3 mb-sm-0">-->
+<!--                                    <input type="text" class="form-control form-control-user" th:field="*{firstName}"-->
+<!--                                           id="exampleFirstName"-->
+<!--                                           placeholder="First Name">-->
+<!--                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"-->
+<!--                                         th:errors="*{firstName}">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <div class="col-sm-6">-->
+<!--                                    <input type="text" th:field="*{lastName}" class="form-control form-control-user"-->
+<!--                                           id="exampleLastName"-->
+<!--                                           placeholder="Last Name">-->
+<!--                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}"-->
+<!--                                         th:errors="*{lastName}">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="form-group">-->
+<!--                                <input type="email" th:field="*{username}" class="form-control form-control-user"-->
+<!--                                       id="exampleInputEmail"-->
+<!--                                       placeholder="Email Username">-->
+<!--                            </div>-->
+<!--                            <div class="form-group row">-->
+<!--                                <div class="col-sm-6 mb-3 mb-sm-0">-->
+<!--                                    <input type="password" th:field="*{password}" class="form-control form-control-user"-->
+<!--                                           id="exampleInputPassword" placeholder="Password">-->
+
+<!--                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}"-->
+<!--                                         th:errors="*{password}">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="col-sm-6">-->
+<!--                                    <input type="password" th:field="*{repeatPassword}"-->
+<!--                                           class="form-control form-control-user"-->
+<!--                                           id="exampleRepeatPassword" placeholder="Repeat Password">-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <button type="submit" class="btn btn-success btn-user btn-block">-->
+<!--                                Register Account-->
+<!--                            </button>-->
+<!--                            <hr>-->
+<!--                        </form>-->
+<!--                        <hr>-->
+<!--                        <div class="text-center">-->
+<!--                            <a class="small" th:href="@{/forgot-password}" href="forgot-password.html">Forgot-->
+<!--                                Password?</a>-->
+<!--                        </div>-->
+<!--                        <div class="text-center">-->
+<!--                            <a class="small" th:href="@{/login}">Already have an account? Login!</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Section: Design Block &ndash;&gt;-->
+<!--<section class="">-->
+<!--    &lt;!&ndash; Jumbotron &ndash;&gt;-->
+<!--    <div class="px-4 py-5 px-md-5 mt-5 text-center text-lg-start">-->
+<!--        <div class="container">-->
+<!--            <div class="row gx-lg-5 align-items-center">-->
+<!--                <div class="col-lg-6 mb-5 mb-lg-0">-->
+<!--                    <h1 class="my-5 display-3 fw-bold ls-tight">-->
+<!--                        Still NØT Register? <br/>-->
+<!--                        <span class="text-primary">Are you sure?</span>-->
+<!--                    </h1>-->
+<!--                </div>-->
+
+<!--                <div class="col-lg-6 mb-5 mb-lg-0">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body py-5 px-md-5">-->
+<!--                            <form th:action="@{/register-new}" th:object="${adminDto}" method="POST">-->
+<!--                                &lt;!&ndash; 2 column grid layout with text inputs for the first and last names &ndash;&gt;-->
+<!--                                <div class="row">-->
+<!--                                    <div class="col-md-6 mb-4">-->
+<!--                                        <input type="text" class="form-control form-control-user"-->
+<!--                                               th:field="*{firstName}"-->
+<!--                                               id="exampleFirstName"-->
+<!--                                               placeholder="First Name">-->
+<!--                                        <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"-->
+<!--                                             th:errors="*{firstName}">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-6 mb-4">-->
+<!--                                        <div class="form-outline">-->
+<!--                                            <input type="text" th:field="*{lastName}"-->
+<!--                                                   class="form-control form-control-user"-->
+<!--                                                   id="exampleLastName"-->
+<!--                                                   placeholder="Last Name">-->
+<!--                                            <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}"-->
+<!--                                                 th:errors="*{lastName}">-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                &lt;!&ndash; Email input &ndash;&gt;-->
+<!--                                <div class="form-group">-->
+<!--                                    <input type="email" th:field="*{username}" class="form-control form-control-user"-->
+<!--                                           id="exampleInputEmail"-->
+<!--                                           placeholder="Email Username">-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash; Password input &ndash;&gt;-->
+<!--                                <div class="form-group row">-->
+<!--                                    <div class="col-md-6 mb-4">-->
+<!--                                        <input type="password" th:field="*{password}"-->
+<!--                                               class="form-control form-control-user"-->
+<!--                                               id="exampleInputPassword" placeholder="Password">-->
+
+<!--                                        <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}"-->
+<!--                                             th:errors="*{password}">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-sm-6">-->
+<!--                                        <input type="password" th:field="*{repeatPassword}"-->
+<!--                                               class="form-control form-control-user"-->
+<!--                                               id="exampleRepeatPassword" placeholder="Repeat Password">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash; Submit button &ndash;&gt;-->
+<!--                                <button type="submit" class="btn btn-primary btn-block mb-4">-->
+<!--                                    Sign up-->
+<!--                                </button>-->
+<!--                                <hr>-->
+<!--                                <div class="text-center">-->
+<!--                                    <a class="small" th:href="@{/forgot-password}" href="forgot-password.html">Forgot-->
+<!--                                        Password?</a>-->
+<!--                                </div>-->
+<!--                                <div class="text-center">-->
+<!--                                    <a class="small" th:href="@{/login}">Already have an account? Login!</a>-->
+<!--                                </div>-->
+<!--                            </form>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Jumbotron &ndash;&gt;-->
+<!--</section>-->
+<!--&lt;!&ndash; Section: Design Block &ndash;&gt;-->
+
+<!--<div th:replace="~{fragments::script}"></div>-->
+
+<!--</body>-->
+
+<!--</html>-->
