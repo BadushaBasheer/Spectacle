@@ -1,15 +1,15 @@
 package com.ecommerce.library.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
 import javax.validation.constraints.Email;
 import java.util.List;
 
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
