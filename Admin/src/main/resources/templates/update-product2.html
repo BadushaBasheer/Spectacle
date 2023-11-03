@@ -18,13 +18,17 @@
                                     </div>
                                 </div>
                                 <div class="card-body px-0 pb-2">
-                                    <form class="row mx-5 my-2" th:action="@{/update-products/{id}(id = ${products.id})}" method="post"
-                                          th:object="${products}" enctype="multipart/form-data">
+                                    <form class="row mx-5 my-2"
+                                          th:action="@{/update-products/{id}(id = ${products.id})}" method="post"
+                                          th:object="${products}" enctype="multipart/form-data"
+                                          id="myForm">
                                         <div class="col-md-6">
                                             <label for="inputProductName" class="form-label">Product Name</label>
                                             <input type="text"
                                                    class="form-control border border-1 border-primary ps-3 mb-2"
-                                                   id="inputProductName" th:field="*{name}">
+                                                   id="inputProductName" th:field="*{name}" th:errorclass="is-invalid">
+                                            <span id="nameError" class="text-danger"></span>
+
                                         </div>
                                         <div class="col-md-3">
                                             <label for="categories" class="form-label">Category</label>
@@ -34,23 +38,32 @@
                                                 <option th:each="category : ${categories}" th:value="${category.id}"
                                                         th:text="${category.name}"></option>
                                             </select>
+                                            <span id="categoryError" class="text-danger"></span>
+
                                         </div>
                                         <div class="col-12">
                                             <label for="inputDescription" class="form-label">Product Description</label>
                                             <textarea class="form-control border border-1 border-primary ps-3 mb-2"
-                                                      id="inputDescription" th:field="*{description}"></textarea>
+                                                      id="inputDescription" th:field="*{description}"
+                                                      th:errorclass="is-invalid"></textarea>
+                                            <span id="descriptionError" class="text-danger"></span>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="inputPrice" class="form-label">Price</label>
                                             <input type="number" min="0" step="1"
                                                    class="form-control border border-1 border-primary ps-3 mb-2"
-                                                   id="inputPrice" th:field="*{costPrice}">
+                                                   id="inputPrice" th:field="*{costPrice}" th:errorclass="is-invalid">
+                                            <span id="priceError" class="text-danger"></span>
+
                                         </div>
                                         <div class="col-md-3">
                                             <label for="available_quantity" class="form-label">Quantity</label>
                                             <input type="number" min="0" step="1"
                                                    class="form-control border border-1 border-primary ps-3 mb-2"
-                                                   id="available_quantity" th:field="*{currentQuantity}">
+                                                   id="available_quantity" th:field="*{currentQuantity}"
+                                                   th:errorclass="is-invalid">
+                                            <span id="quantityError" class="text-danger"></span>
+
                                         </div>
                                         <div class="my-2 d-flex justify-content-around">
                                             <div class="col-md-2 px-0 mt-2">
@@ -88,22 +101,75 @@
                 </div>
             </main>
         </div>
-        <script>
-            function previewImage(imgId, inputElement) {
-                var img = document.getElementById(imgId);
-
-                if (inputElement.files && inputElement.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        img.src = e.target.result;
-                    };
-                    reader.readAsDataURL(inputElement.files[0]);
-                }
-            }
-        </script>
     </div>
 </div>
+<script>
+    function previewImage(imgId, inputElement) {
+        var img = document.getElementById(imgId);
+
+        if (inputElement.files && inputElement.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(inputElement.files[0]);
+        }
+    }
+</script>
+<script>
+    document.getElementById("myForm").onsubmit = function (e) {
+        let name = document.getElementById("inputProductName").value;
+        let category = document.getElementById("categories").value;
+        let description = document.getElementById("inputDescription").value;
+        let cost = document.getElementById("inputPrice").value;
+        let quantity = document.getElementById("available_quantity").value;
+        let isValid = true;
+
+        if (name.trim() === "") {
+            document.getElementById("nameError").innerHTML = "Product Name is required";
+            isValid = false;
+        } else {
+            document.getElementById("nameError").innerHTML = "";
+        }
+        if (category === "null") {
+            document.getElementById("categoryError").innerHTML = "Category is required.";
+            isValid = false;
+        } else {
+            document.getElementById("categoryError").innerHTML = "";
+        }
+
+        // Description validation
+        if (description.trim() === "") {
+            document.getElementById("descriptionError").innerHTML = "Product Description is required.";
+            isValid = false;
+        } else {
+            document.getElementById("descriptionError").innerHTML = "";
+        }
+
+        // Cost validation
+        if (cost.trim() === "") {
+            document.getElementById("costError").innerHTML = "Price is required.";
+            isValid = false;
+        } else {
+            document.getElementById("costError").innerHTML = "";
+        }
+
+        // Quantity validation
+        if (quantity.trim() === "") {
+            document.getElementById("quantityError").innerHTML = "Quantity is required.";
+            isValid = false;
+        } else {
+            document.getElementById("quantityError").innerHTML = "";
+        }
+
+        if (!isValid) {
+            e.preventDefault(); // Prevent form submission
+        }
+    };
+</script>
+
+
 </body>
 </html>
 

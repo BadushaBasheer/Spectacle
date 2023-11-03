@@ -4,10 +4,9 @@
 <style>
     .bg {
         background-position: center;
-        background-image: url("https://st2.depositphotos.com/4044301/5905/v/950/depositphotos_59058399-stock-illustration-sunglasses-pattern.jpg");
+        background-image: url("https://images.pexels.com/photos/2752369/pexels-photo-2752369.jpeg");
         background-size: cover;
     }
-
     .card {
         background-color: transparent;
         backdrop-filter: blur(15px);
@@ -19,12 +18,13 @@
 
 <!-- Jumbotron -->
 
-<div class="px-4 py-5 px-md-5 text-center text-lg-start ">
+<div class="px-4 py-5 px-md-5 text-center text-lg-start">
     <div class="container pz-5 ">
-        <div class="row gx-lg-5  align-items-center ">
+        <div class="row  align-items-center ">
             <div class="col-lg-6 mb-5 mb-lg-0">
                 <div class="card">
-                    <div class="card-body py-5 px-md-5">
+                    <div class="card-body ">
+<!--                        py-5 px-md-5-->
                         <h1>REGISTER</h1>
                         <hr>
                         <div th:if="${param.error}">
@@ -46,56 +46,67 @@
                         </div>
                         <form method="post" th:action="@{/register-new}" th:object="${customerDto}">
 
-                            <div class="form-outline mb-4">
-                                <input type="text" class="form-control" required="" th:field="*{firstName}"
-                                       name="firstname" placeholder="First Name">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-outline mb-4">
+                                        <input type="text" class="form-control" required="" th:field="*{firstName}"
+                                               name="firstname" placeholder="First Name">
+                                    </div>
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"
+                                         th:errors="*{firstName}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-outline mb-4">
+                                        <input type="text" class="form-control" required="" th:field="*{lastName}"
+                                               name="lastname" placeholder="Last Name">
+                                    </div>
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}"
+                                         th:errors="*{lastName}"></div>
+                                </div>
                             </div>
-                            <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}"
-                                 th:errors="*{firstName}"></div>
 
-
-                            <div class="form-outline mb-4">
-                                <input type="text" class="form-control" required="" th:field="*{lastName}"
-                                       name="lastname" placeholder="Last Name">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-outline mb-4">
+                                        <input type="email" class="form-control" required="" th:field="*{username}"
+                                               name="username" placeholder="Email/Username">
+                                    </div>
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('username')}"
+                                         th:errors="*{username}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-outline mb-4">
+                                        <input type="tel" class="form-control" required="" th:field="*{phoneNumber}"
+                                               name="phoneNumber" placeholder="Phone Number">
+                                    </div>
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('phoneNumber')}"
+                                         th:errors="*{phoneNumber}"></div>
+                                </div>
                             </div>
-                            <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}"
-                                 th:errors="*{lastName}"></div>
-
-
-                            <div class="form-outline mb-4">
-                                <input type="email" class="form-control" required="" th:field="*{username}"
-                                       name="username" placeholder="Email/Username">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-outline mb-4">
+                                        <input required="" class="form-control" type="password" th:field="*{password}"
+                                               name="password" placeholder="Password">
+                                    </div>
+                                    <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}"
+                                         th:errors="*{password}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-outline mb-4">
+                                        <input required="" class="form-control" type="password" th:field="*{repeatPassword}"
+                                               name="repeatPassword" placeholder="Confirm password">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="alert alert-danger" th:if="${#fields.hasErrors('username')}"
-                                 th:errors="*{username}"></div>
 
-
-                            <div class="form-outline mb-4">
-                                <input type="tel" class="form-control" required="" th:field="*{phoneNumber}"
-                                       name="phoneNumber" placeholder="Phone Number">
-                            </div>
-                            <div class="alert alert-danger" th:if="${#fields.hasErrors('phoneNumber')}"
-                                 th:errors="*{phoneNumber}"></div>
-
-                            <div class="form-outline mb-4">
-                                <input required="" class="form-control" type="password" th:field="*{password}"
-                                       name="password" placeholder="Password">
-                            </div>
-                            <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}"
-                                 th:errors="*{password}"></div>
-
-
-                            <div class="form-outline mb-4">
-                                <input required="" class="form-control" type="password" th:field="*{repeatPassword}"
-                                       name="repeatPassword" placeholder="Confirm password">
-                            </div>
                             <div class="row">
                                 <div class="col-md-8 mb-4">
                                     <div class="form-outline">
                                         <input type="text" name="referralCode" th:field="*{referralCode}" placeholder="Referral Code" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-1">
                                     <div class="form-group">
                                         <button type="button" class="btn btn-secondary" id="checkReferralCodeButton" style="border-radius: 5px;">Check Referral Code</button>
                                     </div>

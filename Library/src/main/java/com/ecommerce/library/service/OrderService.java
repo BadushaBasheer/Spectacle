@@ -28,4 +28,6 @@ public interface OrderService {
 
     List<Order> findALlOrders();
 
+    Order getOrderById(Long orderId);
+
 }

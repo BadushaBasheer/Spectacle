@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:fragment="html_head">
-    <title>Home</title>
+    <title>𝚜𝚙𝚎𝚌𝚝𝚊𝚌𝚕𝚎</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
-    <link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+    <link rel="icon" type="image/png" th:href="@{/images/icons/spec.png}"/>
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
     <!--===============================================================================================-->
@@ -36,18 +36,15 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
     <!--===============================================================================================-->
 </head>
-<body>
 
-<header th:fragment="header_top"  class="page-container">
-    <!-- Header -->
-    <!-- Header desktop -->
+
+<header th:fragment="header_top" class="page-container">
     <div class="container-menu-desktop how-shadow1">
         <nav class="menu-desktop">
             <!-- Logo desktop -->
             <a th:href="@{/index}" class="logo">
                 <img th:src="@{/images/icons/spect.png}" alt="IMG-LOGO">
             </a>
-            <!-- Menu desktop -->
             <div class="menu-desktop text-uppercase">
                 <ul class="main-menu">
                     <li><a th:href="@{/index}"> Home </a></li>
@@ -59,11 +56,11 @@
             </div>
             <div class="wrap-icon-header flex-w flex-r-m">
                 <form th:action="@{/search-product}" method="get" class="form-inline">
-                    <div class="input-group">
+                    <div class="input-group icon-header-item cl2 hov-cl1">
                         <input type="text" id="name" name="name" class="form-control" placeholder="Search">
-                        <div class="icon-header-item cl2 hov-cl1 ">
-                            <button type="submit" class="btn-outline-dark">
-                                <i class="btn zmdi zmdi-search"></i>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-dark">
+                                <i class="zmdi zmdi-search"></i>
                             </button>
                         </div>
                     </div>
@@ -122,7 +119,7 @@
 
 
                     <li class="p-b-13">
-                        <a  th:href="@{/logout}" class="stext-102 cl2 hov-cl1 trans-04">
+                        <a th:href="@{/logout}" class="stext-102 cl2 hov-cl1 trans-04">
                             LOGOUT
                         </a>
                     </li>
@@ -313,10 +310,10 @@
                 </a>
             </div>
 
-            <p class="stext-107 cl6 txt-center">
-                Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i>
-            </p>
+            <!--            <p class="stext-107 cl6 txt-center">-->
+            <!--                Copyright &copy;<script>document.write(new Date().getFullYear());</script>-->
+            <!--                All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i>-->
+            <!--            </p>-->
         </div>
     </div>
 
@@ -349,7 +346,7 @@
     <script th:src="@{/vendor/daterangepicker/daterangepicker.js}"></script>
     <!--===============================================================================================-->
     <script th:src="@{/vendor/slick/slick.min.js}"></script>
-<!--    <script th:src="@{/js/slick-custom.js}"></script>-->
+    <!--    <script th:src="@{/js/slick-custom.js}"></script>-->
     <!--===============================================================================================-->
     <script th:src="@{/vendor/parallax100/parallax100.js}"></script>
     <script>
@@ -357,18 +354,18 @@
     </script>
     <!--===============================================================================================-->
     <script th:src="@{/vendor/MagnificPopup/jquery.magnific-popup.min.js}"></script>
-        <script>
-            $('.gallery-lb').each(function () { // the containers for all your galleries
-                $(this).magnificPopup({
-                    delegate: 'a', // the selector for gallery item
-                    type: 'image',
-                    gallery: {
-                        enabled: true
-                    },
-                    mainClass: 'mfp-fade'
-                });
+    <script>
+        $('.gallery-lb').each(function () { // the containers for all your galleries
+            $(this).magnificPopup({
+                delegate: 'a', // the selector for gallery item
+                type: 'image',
+                gallery: {
+                    enabled: true
+                },
+                mainClass: 'mfp-fade'
             });
-        </script>
+        });
+    </script>
     <!--===============================================================================================-->
     <script th:src="@{/vendor/isotope/isotope.pkgd.min.js}"></script>
     <!--===============================================================================================-->

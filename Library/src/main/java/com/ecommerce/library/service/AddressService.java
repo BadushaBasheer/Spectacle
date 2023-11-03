@@ -13,7 +13,7 @@ public interface AddressService {
 
     AddressDto findById(long id);
 
-    void deleteAddress(long id);
+    void deleteAddress(Long id);
 
     void enable(long id);
 

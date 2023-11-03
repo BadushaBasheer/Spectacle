@@ -113,19 +113,24 @@ public class AccountController {
         return "edit-address";
     }
 
-//    @GetMapping("/delete/{id}")
-//    public String showDeleteAddressForm(@PathVariable("id") Long id, Model model) {
-//        AddressDto addressDto = addressService.findById(id);
-//        model.addAttribute("addressDto", addressDto);
-//        return "account";
-//    }
-//
-//    @PostMapping("/delete/{id}")
-//    public String deleteAddress(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-//        addressService.deleteAddress(id);
-//        redirectAttributes.addFlashAttribute("message", "Address deleted successfully.");
-//        return "redirect:/account";
-//    }
+    @GetMapping("/delete-address/{id}")
+    public String showDeleteAddressForm(@PathVariable("id") Long id, Model model) {
+        System.out.println("address deletion step occur");
+        AddressDto addressDto = addressService.findById(id);
+        if (addressDto != null) {
+            model.addAttribute("addressDto", addressDto);
+            addressService.deleteAddress(id);
+        }else{
+            throw new IllegalArgumentException("address not found!");
+        }
+        return "redirect:/account";
+    }
+    @PostMapping("/delete-address/{id}")
+    public String deleteAddress(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        addressService.deleteAddress(id);
+        redirectAttributes.addFlashAttribute("message", "Address deleted successfully.");
+        return "account";
+    }
 
     @PostMapping("/update-address/{id}")
     public String updateAddress(@PathVariable("id") Long id, HttpServletRequest request, Principal principal, @ModelAttribute("addressDto") AddressDto addressDto, RedirectAttributes redirectAttributes) {

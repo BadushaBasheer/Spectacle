@@ -16,6 +16,8 @@
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
             rel="stylesheet">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css'>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+
     <script src='https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js'></script>
 
 
@@ -381,10 +383,62 @@
 </a>
 <div th:fragment="script">
 
+
     <!-- Bootstrap core JavaScript-->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+    <script src=https://code.jquery.com/jquery-3.7.1.min.js
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+    </script>
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js
+            integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js
+            integrity="sha512-OQlawZneA7zzfI6B1n1tjUuo3C5mtYuAWpQdg+iI9mkDoo7iFzTqnQHf+K5ThOWNJ9AbXL4+ZDwH7ykySPQc+A=="
+            crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#orderTable').DataTable(
+                {
+                    order: [
+                        [
+                            0, 'desc'
+                        ]
+                    ]
+                }
+            );
+        });
+
+        function submitSelection(orderId) {
+            const select = document.getElementById("order-status").value;
+            console.log("start")
+            $.ajax({
+
+                url: "/admin/get-order-status/" + orderId,
+                method: "GET",
+
+                success: function (currentStatus) {
+                    if (currentStatus === "Returned" && select === "Returned") {
+                        alert("Order is already marked as Returned.");
+                        return; // Don't proceed with the update
+                    }
+                    // Continue with the update logic
+                    window.location.href = "/admin/orders?status=" + select + "&orderId= " + orderId;
+                },
+                error: function () {
+                    alert("Failed to retrieve the current order status.");
+                }
+            });
+            console.log("end")
+        }
+    </script>
     <!-- Core plugin JavaScript-->
     <script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
 

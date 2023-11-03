@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="~{fragments::header}">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
 </head>
 <body id="page-top">
 <div id="wrapper">
@@ -84,56 +83,5 @@
 <footer th:replace="~{fragments :: footer}"></footer>
 <a th:replace="~{fragments :: scroll}"></a>
 <div th:replace="~{fragments :: script}"></div>
-
-
-<script src=https://code.jquery.com/jquery-3.7.1.min.js
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
-</script>
-
-<script src=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js
-        integrity="sha512-BkpSL20WETFylMrcirBahHfSnY++H2O1W+UnEEO4yNIl+jI2+zowyoGJpbtk6bx97fBXf++WJHSSK2MV4ghPcg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
-</script>
-<script src=https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap4.min.js
-        integrity="sha512-OQlawZneA7zzfI6B1n1tjUuo3C5mtYuAWpQdg+iI9mkDoo7iFzTqnQHf+K5ThOWNJ9AbXL4+ZDwH7ykySPQc+A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
-
-</script>
-<script>
-    $(document).ready(function () {
-        $('#orderTable').DataTable(
-            {
-                order: [
-                    [
-                        0, 'desc'
-                    ]
-                ]
-            }
-        );
-    });
-
-    function submitSelection(orderId) {
-        const select = document.getElementById("order-status").value;
-        console.log("start")
-        $.ajax({
-
-            url: "/admin/get-order-status/" + orderId,
-            method: "GET",
-
-            success: function (currentStatus) {
-                if (currentStatus === "Returned" && select === "Returned") {
-                    alert("Order is already marked as Returned.");
-                    return; // Don't proceed with the update
-                }
-                // Continue with the update logic
-                window.location.href = "/admin/orders?status=" + select + "&orderId= " + orderId;
-            },
-            error: function () {
-                alert("Failed to retrieve the current order status.");
-            }
-        });
-        console.log("end")
-    }
-</script>
 </body>
 </html>

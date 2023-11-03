@@ -28,8 +28,6 @@ public class CartServiceImpl implements CartService {
     }
     @Override
     public Cart addItemToCart(ProductDto productDto, int quantity, String username) {
-
-
         Customer customer = customerService.findByUsername(username);
         Cart cart = customer.getCart();
 
@@ -57,7 +55,6 @@ public class CartServiceImpl implements CartService {
         if (productDto.getCurrentQuantity() < quantity) {
             System.out.println("here");
             throw new RuntimeException("Insufficient quantity available for product: " + product.getName());
-
         }
 
         if (cartItem == null) {

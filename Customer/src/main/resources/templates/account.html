@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="~{fragments :: html_head}"></head>
 <body class="animsition">
-<!-- Header -->
 <header th:replace="~{fragments :: header_top}"></header>
 <section class="section-slide mt-5 text-uppercase">
     <div class="container">
@@ -12,7 +11,7 @@
                     <div class="card-body">
                         <div th:object="${customer}">
                             <div class="text-center mb-4">
-                                <h3 class="text-primary">
+                                <h3 class="text-dark">
                                     <strong>User Profile</strong>
                                 </h3>
                             </div>
@@ -21,7 +20,8 @@
                                 <div class="col-sm-3">
                                     <h6 class="mb-0">Full Name</h6>
                                 </div>
-                                <div class="col-sm-9 text-secondary" th:text="${customer.firstName + ' ' + customer.lastName}">
+                                <div class="col-sm-9 text-secondary"
+                                     th:text="${customer.firstName + ' ' + customer.lastName}">
                                 </div>
                             </div>
                             <hr>
@@ -46,29 +46,35 @@
                                     <h6 class="mb-0" th:text="'adddress'"></h6>
                                 </div>
                                 <div class="col-sm-7 text-secondary">
-                                    <address th:utext="${address.addressLine1 + ', ' + address.addressLine2 + ', ' + address.city + ', ' + address.pincode + ', ' + address.district + ', ' + address.state + ', ' + address.country}"></address>
+                                    <address
+                                            th:utext="${address.addressLine1 + ', ' + address.addressLine2 + ', ' + address.city + ', ' + address.pincode + ', ' + address.district + ', ' + address.state + ', ' + address.country}"></address>
                                     <hr>
                                 </div>
-                                <div class="col-sm-2 text-secondary">
-                                    <a th:href="@{'/edit-address/' + ${address.id}}" class="edit-link zmdi zmdi-edit"> Edit</a>
-                                </div>
-
+                                    <div class="col-sm-2 text-secondary">
+                                        <a th:href="@{'/edit-address/' + ${address.id}}"
+                                           class="edit-link zmdi zmdi-edit btn-outline-dark"></a>
+                                            <a th:href="@{'/delete-address/'+ ${address.id}}"
+                                               class="edit-link zmdi zmdi-delete btn-outline-dark"></a>
+                                    </div>
                             </div>
 
                             <div class="text-center mb-4">
-                                <a th:href="@{add-address}" id="dialog-link" class="btn btn-primary btn-sm">
+                                <a th:href="@{add-address}" id="dialog-link" class="btn btn-dark btn-sm">
                                     <i class="fa fa-map-marker"></i> New Address
                                 </a>
                             </div>
                             <hr>
                             <div style="background-color: #f7f7f7; border: 1px solid #ddd; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                                <h5 class="text-center text-primary mb-3">My Referral Code</h5>
+                                <h5 class="text-center text-dark mb-3">My Referral Code</h5>
                                 <p class="text-center">
-                                    <span id="referralCode" th:text="${customer.referralCode}" style="font-size: 24px; color: #007bff; font-weight: bold;"></span>
+                                    <span id="referralCode" th:text="${customer.referralCode}"
+                                          style="font-size: 24px; color: #007bff; font-weight: bold;"></span>
                                 </p>
-                                 <div class="form-group text-center">
-                                    <input type="email" id="emailAddress" class="form-control" placeholder="Recipient's Email Address">
-                                    <button type="button" class="btn btn-primary mt-2" id="shareViaEmailButton" onclick="shareViaEmail()">
+                                <div class="form-group text-center">
+                                    <input type="email" id="emailAddress" class="form-control"
+                                           placeholder="Recipient's Email Address">
+                                    <button type="button" class="btn btn-dark mt-2" id="shareViaEmailButton"
+                                            onclick="shareViaEmail()">
                                         Share Referral Code via Email
                                     </button>
                                 </div>

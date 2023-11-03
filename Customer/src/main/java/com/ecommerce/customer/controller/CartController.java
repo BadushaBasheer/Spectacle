@@ -8,11 +8,7 @@ import com.ecommerce.library.repository.ProductRepository;
 import com.ecommerce.library.service.CartService;
 import com.ecommerce.library.service.CustomerService;
 import com.ecommerce.library.service.ProductService;
-import com.razorpay.RazorpayClient;
-import com.razorpay.RazorpayException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,75 +17,44 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.util.Map;
 
-
 @Controller
 public class CartController {
     private final CartService cartService;
     private final ProductService productService;
     private final CustomerService customerService;
-    private final ProductRepository productRepository;
 
-    public CartController(CartService cartService, ProductService productService, CustomerService customerService,
-                          ProductRepository productRepository) {
+    public CartController(CartService cartService, ProductService productService, CustomerService customerService) {
         this.cartService = cartService;
         this.productService = productService;
         this.customerService = customerService;
-        this.productRepository = productRepository;
     }
 
 //====================================ADDING TO CART FROM PRODUCT DETAILS============================================
-
-
     @GetMapping("/cart")
-    public String cart(Model model,
-                       Principal principal,
-                       HttpServletRequest httpServletRequest,
-                       RedirectAttributes redirectAttributes,
-                       Product product)
-    {
+    public String viewCart(Principal principal, Model model, Product product) {
         if (principal == null) {
             return "redirect:/login";
-        } else {
-            Customer customer = customerService.findByUsername(principal.getName());
-            Cart cart = customer.getCart();
-
-            if (cart == null || cart.getCartItems().isEmpty()) {
-                System.out.println("The cart is empty");
-                redirectAttributes.addFlashAttribute("text", "Sorry, the cart is empty. Keep shopping");
-
-                String referer = httpServletRequest.getHeader("referer");
-
-                if (referer != null) {
-                    return "redirect:" + referer;
-                } else {
-                    System.out.println("here -------------------cart controller 57");
-                    return "shopping-cart2";
-                }
-            }
-            HttpSession httpSession1 = httpServletRequest.getSession();
-            String name = null;
-            if (httpSession1 != null) {
-                name = httpServletRequest.getRemoteUser();
-            }
-            model.addAttribute("name", name);
-            if (cart!=null) {
-                model.addAttribute("grandTotal", cart.getTotalPrice());
-            }
-            model.addAttribute("product", product);
-            model.addAttribute("shoppingCart", cart);
-            model.addAttribute("title", "Cart");
-            return "shopping-cart2";
         }
+        Customer customer = customerService.findByUsername(principal.getName());
+        Cart cart = customer.getCart();
+        if (cart == null || cart.getCartItems().isEmpty()) {
+            model.addAttribute("cartEmptyMessage", "Sorry,Your cart is Empty😢");
+        } else if (cart != null) {
+            model.addAttribute("grandTotal", cart.getTotalPrice());
+        }
+        model.addAttribute("product", product);
+        model.addAttribute("shoppingCart", cart);
+        model.addAttribute("title", "Cart");
+        return "shopping-cart2";
     }
-
+//======================================================================================================================
     @PostMapping("/add-to-cart")
     public String addItemToCart(Model model,
                                 Principal principal,
                                 HttpSession session,
                                 RedirectAttributes redirectAttributes,
                                 @RequestParam("id") Long id,
-                                @RequestParam(value = "quantity", required = false, defaultValue = "1") int quantity)
-    {
+                                @RequestParam(value = "quantity", required = false, defaultValue = "1") int quantity) {
         ProductDto productDto = productService.getByProductId(id);
         if (principal == null) {
             System.out.println("No authenticated user");
@@ -115,41 +80,42 @@ public class CartController {
 //=====================================================================================================================================================
 
     @RequestMapping(value = "/update-cart", method = RequestMethod.POST)
-
-    public String updateCart(Model model,
-                            Principal principal,
-                            RedirectAttributes redirectAttributes,
-                            @RequestParam(value = "id", required = false) Long id,
-                            @RequestParam(value = "quantity", required = false) int quantity,
-                            @RequestParam(value = "updateButton", required = false) Long updateItemId,
-                            @RequestParam(value = "deleteButton", required = false) Long removeItemId)
-    {
+    public String updateCart(
+            Model model,
+            Principal principal,
+            RedirectAttributes redirectAttributes,
+            @RequestParam(value = "id", required = false) Long id,
+            @RequestParam(value = "quantity", required = false) int quantity,
+            @RequestParam(value = "updateButton", required = false) Long updateItemId,
+            @RequestParam(value = "deleteButton", required = false) Long removeItemId) {
         if (principal == null) {
             return "redirect:/login";
-        } else if (updateItemId != null && quantity >= 1) {
-            System.out.println(id);
-            ProductDto productDto = productService.getByProductId(id);
-            String username = principal.getName();
-            try {
+        }
+        String username = principal.getName();
+        try {
+            if (updateItemId != null && quantity >= 1) {
+                ProductDto productDto = productService.getByProductId(id);
                 Cart shoppingCart = cartService.updateCart(productDto, quantity, username);
                 model.addAttribute("shoppingCart", shoppingCart);
-            } catch (RuntimeException ex) {
-                String errorMessage = ex.getMessage();
-                redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-            }
-        } else if (removeItemId != null) {
-            ProductDto productDto = productService.getByProductId(id);
-            String username = principal.getName();
-            Cart shoppingCart = cartService.removeItemFromCart(productDto, username);
-            model.addAttribute("shoppingCart", shoppingCart);
-            if(shoppingCart.getCartItems().size()==0){
-                Customer customer = customerService.findByUsername(principal.getName());
-                Cart cart = customer.getCart();
-                if (shoppingCart == null ||shoppingCart.getCartItems().isEmpty()) {
-                    model.addAttribute("cartEmptyMessage", "Your cart is empty.");
+            } else if (removeItemId != null) {
+                ProductDto productDto = productService.getByProductId(id);
+                Cart shoppingCart = cartService.removeItemFromCart(productDto, username);
+                model.addAttribute("shoppingCart", shoppingCart);
+                if (shoppingCart.getCartItems().isEmpty()) {
+                    Customer customer = customerService.findByUsername(principal.getName());
+                    Cart cart = customer.getCart();
+                    if (cart == null || cart.getCartItems().isEmpty()) {
+                        model.addAttribute("cartEmptyMessage", "Your cart is empty.");
+                        return "shopping-cart2";
+                    }
                 }
-                return "shopping-cart2";
             }
+        } catch (IllegalArgumentException ex) {
+            String errorMessage = ex.getMessage();
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+        } catch (Exception e) {
+            String errorMessage = "An error occurred while updating the cart.";
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         }
         return "redirect:/cart";
     }

@@ -81,7 +81,6 @@ public class OrderServiceImpl implements OrderService {
         if (!outOfStockItems.isEmpty()) {
             StringBuilder errorMessage = new StringBuilder("The following items are not available in sufficient quantity: ");
             errorMessage.append(String.join(", ", outOfStockItems));
-
             throw new RuntimeException(errorMessage.toString());
         }
         order.setOrderDetailList(orderDetailList);
@@ -129,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
         orderListUniversal(order);
         order.setOrderStatus("Returned");
         orderRepository.save(order);
-//        walletService.returnCredit(order,customer);
+        walletService.returnCredit(order,customer);
     }
 
     private void orderListUniversal(Order order) {
@@ -205,6 +204,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findALlOrders() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    public Order getOrderById(Long orderId) {
+        return orderRepository.getReferenceById(orderId);
     }
 
 

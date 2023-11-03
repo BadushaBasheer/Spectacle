@@ -40,7 +40,6 @@ public class WishlistController {
             return "redirect:/login";
         }
         System.out.println(principal.getName());
-
         Customer customer = customerService.findByUsername(principal.getName());
         System.out.println(customer + "is   name");
         List<Wishlist> wishlists = wishlistService.findAllByCustomer(customer);

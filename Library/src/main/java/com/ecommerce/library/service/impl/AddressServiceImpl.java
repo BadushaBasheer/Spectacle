@@ -6,11 +6,17 @@ import com.ecommerce.library.model.Customer;
 import com.ecommerce.library.repository.AddressRepository;
 import com.ecommerce.library.service.AddressService;
 import com.ecommerce.library.service.CustomerService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.logging.Logger;
+
 @Service
 public class AddressServiceImpl implements AddressService {
+
+    private final Logger logger=Logger.getLogger(CustomerService.class.getName());
 
     private final CustomerService customerService;
     private final AddressRepository addressRepository;
@@ -49,11 +55,12 @@ public class AddressServiceImpl implements AddressService {
         address.set_default(false);
         return addressRepository.save(address);
     }
-//========================================================================================================================
+
+    //========================================================================================================================
     @Override
     public Address update(AddressDto addressDto) {
-        long id=addressDto.getId();
-        Address address=addressRepository.findById(id);
+        long id = addressDto.getId();
+        Address address = addressRepository.findById(id);
         address.setAddressLine1(addressDto.getAddress_line_1());
         address.setAddressLine2(address.getAddressLine2());
         address.setCity(address.getCity());
@@ -81,8 +88,15 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void deleteAddress(long id) {
-        addressRepository.deleteById(id);
+    @Transactional
+    public void deleteAddress(Long id) {
+        Optional<Address> address = addressRepository.findById(id);
+        if (address.isPresent()) {
+            logger.info("error occurred on delete address");
+            addressRepository.deleteById(id);
+        }else {
+            throw new IllegalArgumentException("Address Not found");
+        }
     }
 
     @Override

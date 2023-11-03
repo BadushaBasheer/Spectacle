@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
-<head th:replace="~{fragments :: html_head}">
-    <title></title>
-</head>
-
+<head th:replace="~{fragments :: html_head}"></head>
 <body class="animsition">
-
-<!-- Header -->
 <header th:replace="~{fragments :: header_top}"></header>
-
-<!-- Product Detail -->
 <section class="sec-product-detail bg0 p-t-65 p-b-60 text-uppercase">
     <div class="container">
         <div class="container">
@@ -18,7 +11,6 @@
                     Home
                     <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
                 </a>
-
                 <a href="product.html" th:href="@{/product}" class="stext-109 cl8 hov-cl1 trans-04">
                     product
                     <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
@@ -45,7 +37,6 @@
                                     </a>
                                 </div>
                             </div>
-
                             <div class="item-slick3"
                                  th:attr="data-thumb='/user/ProductImage/' + ${products.imageUrls[1]}">
                                 <div class="wrap-pic-w pos-relative">
@@ -57,7 +48,6 @@
                                     </a>
                                 </div>
                             </div>
-
                             <div class="item-slick3"
                                  th:attr="data-thumb='/user/ProductImage/' + ${products.imageUrls[2]}">
                                 <div class="wrap-pic-w pos-relative">
@@ -73,7 +63,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-6 col-lg-5 p-b-30">
                 <div class="p-r-50 p-t-5 p-lr-0-lg">
                     <h4 class="ltext-101 cl2 js-name-detail p-b-14" th:text="${products.getName()}"></h4>
@@ -108,17 +97,9 @@
                                         <!--                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" th:href="@{/add-wishlist/{id} (id=${products.id})}"><i class="fi-rs-heart"></i></a>-->
                                     </div>
                                 </form>
-
-
                             </div>
                         </div>
                     </div>
-
-                    <!--                    <a th:href="@{/wish-list}"-->
-                    <!--                           class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"-->
-                    <!--                           data-tooltip="Add to Wishlist">-->
-                    <!--                          <i class="zmdi zmdi-favorite"></i>-->
-                    <!--                        </a>-->
                 </div>
             </div>
         </div>

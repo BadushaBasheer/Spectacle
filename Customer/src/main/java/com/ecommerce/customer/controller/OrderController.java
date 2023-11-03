@@ -62,12 +62,10 @@ public class OrderController {
             String errorMessage = (String) redirectAttributes.getFlashAttributes().get("errorMessage");
             model.addAttribute("errorMessage", errorMessage);
         }
-        AddressDto addressDto = new AddressDto();
-        model.addAttribute("addressDto", addressDto);
-
         String username = principal.getName();
         Customer customer = customerService.findByUsername(username);
-
+        AddressDto addressDto = new AddressDto();
+        model.addAttribute("addressDto", addressDto);
         if (customer.getAddress().isEmpty()) {
             System.out.println("EMP");
             model.addAttribute("customer", customer);
