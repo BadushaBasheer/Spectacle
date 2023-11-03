@@ -29,7 +29,7 @@ public class CategoryController{
         this.categoryService = categoryService;
     }
 //========================================================================================================================
-
+//----------------------------------CATEGORIES-----------------------------------------------------------------------------
     @GetMapping("/categories")
     public String categories(Model model, Principal principal) {
         if (principal == null) {
