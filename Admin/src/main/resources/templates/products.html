@@ -72,7 +72,10 @@
                             <td th:text="${product.currentQuantity}"></td>
                             <td>
                                 <img src="" style="height: 40px; width: 40px;"
-                                     th:src="@{|/ProductImage/${product.imageUrls[0]}|}" alt="product image"></td>
+                                     th:src="@{/ProductImage/${product.imageUrls[0]}}" alt="product image">
+                            </td>
+                            <!--                                     th:src="@{|/ProductImage/${product.imageUrls[0]}|}" alt="product image"></td>-->
+
                             <td>
                                 <a th:href="@{/update-product/{id} (id = ${product.id})}"
                                    class="btn btn-primary">Update</a>
