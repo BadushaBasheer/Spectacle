@@ -24,9 +24,11 @@ import java.util.UUID;
 @Component
 public class ImageUpload {
 
-    String UPLOAD_FOLDER =         "D:\\23092023\\E-Commerce_badusha_23\\Admin\\src\\main\\resources\\static\\ProductImage";
+//    String UPLOAD_FOLDER =         "D:\\23092023\\E-Commerce_badusha_23\\Admin\\src\\main\\resources\\static\\ProductImage";
+    String UPLOAD_FOLDER =         "/home/ubuntu/Spectacle/Admin/src/main/resources/static/ProductImage";
 
-    String UPLOAD_FOLDER_CUSTOMER = "D:\\23092023\\E-Commerce_badusha_23\\Customer\\src\\main\\resources\\static\\ProductImage";
+//    String UPLOAD_FOLDER_CUSTOMER = "D:\\23092023\\spectacle\\Customer\\src\\main\\resources\\static\\ProductImage";
+    String UPLOAD_FOLDER_CUSTOMER = "/home/ubuntu/Spectacle/Customer/src/main/resources/static/ProductImage";
 
 
     public List<String> uploadImages(List<MultipartFile> imageFiles){
