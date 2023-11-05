@@ -37,10 +37,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Optional<Category> findById(Long id) {
-        return repo.findById(id);
+    public Category findById(Long id) {
+        return repo.findById(id).get();
     }
-
 
     @Override
     public Category update(Category category) {

@@ -12,7 +12,8 @@ public interface CategoryService {
 
     Category save(Category category);
 
-    Optional<Category> findById(Long id);
+
+    Category findById(Long id);
     Category update(Category category);
     void disableById(Long id);
     void enabledById(Long id);

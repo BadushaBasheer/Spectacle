@@ -17,7 +17,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-public class CategoryController{
+public class CategoryController {
 
     private static final Logger logger = LoggerFactory.getLogger(Category.class);
 
@@ -28,7 +28,8 @@ public class CategoryController{
 
         this.categoryService = categoryService;
     }
-//========================================================================================================================
+
+    //========================================================================================================================
 //----------------------------------CATEGORIES-----------------------------------------------------------------------------
     @GetMapping("/categories")
     public String categories(Model model, Principal principal) {
@@ -37,13 +38,14 @@ public class CategoryController{
         }
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("searchResults",categories);
+        model.addAttribute("searchResults", categories);
         model.addAttribute("size", categories.size());
         model.addAttribute("title", "Category");
         model.addAttribute("categoryNew", new Category());
         return "categories";
     }
-//==================================================SAVE===================================================================
+
+    //==================================================SAVE===================================================================
     @PostMapping("/save-category")
     public String add(@ModelAttribute("categoryNew") Category category, RedirectAttributes attributes) {
         try {
@@ -59,14 +61,21 @@ public class CategoryController{
 
 //===============================================UPDATE=========================================================================
 
+    @GetMapping("/findById")
+    @ResponseBody
+    public Category findById(Long id) {
+        return categoryService.findById(id);
+    }
+
     @PostMapping("/update-category")
     public String update(@Valid Category category, RedirectAttributes redirectAttributes) {
-        try {if (category.getId() == null) {
-            System.out.println("Null");
-        } else {
-            categoryService.update(category);
-            redirectAttributes.addFlashAttribute("success", "Update successfully!");
-        }
+        try {
+            if (category.getId() == null) {
+                System.out.println("Null");
+            } else {
+                categoryService.update(category);
+                redirectAttributes.addFlashAttribute("success", "Update successfully!");
+            }
         } catch (DataIntegrityViolationException e1) {
             e1.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Duplicate name of category, please check again!");
@@ -76,6 +85,7 @@ public class CategoryController{
         }
         return "redirect:/categories";
     }
+
 //==================================================ENABLE/DISABLE======================================================================
 
     @RequestMapping(value = "/disable-category", method = {RequestMethod.GET, RequestMethod.PUT})
@@ -83,7 +93,6 @@ public class CategoryController{
         try {
             categoryService.disableById(id);
             redirectAttributes.addFlashAttribute("success", "Disabled successfully!");
-
 
         } catch (DataIntegrityViolationException e1) {
             e1.printStackTrace();
@@ -95,7 +104,7 @@ public class CategoryController{
         return "redirect:/categories";
     }
 
-    @RequestMapping(value = "/enable-category", method = {RequestMethod.PUT,RequestMethod.GET, RequestMethod.DELETE})
+    @RequestMapping(value = "/enable-category", method = {RequestMethod.PUT, RequestMethod.GET, RequestMethod.DELETE})
     public String enable(Long id, RedirectAttributes redirectAttributes) {
         try {
             categoryService.enabledById(id);
