@@ -44,19 +44,15 @@
                     </tr>
                     </thead>
                     <tbody class="text-uppercase">
-                    <tr th:each=" category: ${categories}">
+                    <tr th:each="category: ${categories}">
                         <th scope="row" th:text="${category.id}"></th>
                         <td th:text="${category.name}"></td>
-                        <td><a id="editButton" th:href="@{/findById(id=${category.id})}"
-                               class="btn btn-primary">Update</a>
+                        <td>
+                            <a id="editButton" th:href="@{/findById(id=${category.id})}" class="btn btn-primary">Update</a>
                         </td>
                         <td>
-                            <a th:if="${category.is_activated()} == true"
-                               th:href="@{/disable-category(id=${category.id})}"
-                               class="btn btn-warning">Disable</a>
-                            <a th:if="${category.is_activated()} == false"
-                               th:href="@{/enable-category(id=${category.id})}"
-                               class="btn btn-danger">Enable</a>
+                            <a th:if="${category.is_activated()} == true" th:href="@{/disable-category(id=${category.id})}" class="btn btn-warning">Disable</a>
+                            <a th:if="${category.is_activated()} == false" th:href="@{/enable-category(id=${category.id})}" class="btn btn-danger">Enable</a>
                         </td>
                     </tr>
                     </tbody>
@@ -118,6 +114,7 @@
     </div>
 </div>
 <div th:replace="~{fragments::script}"></div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/categories.js}"></script>
 
 </body>
