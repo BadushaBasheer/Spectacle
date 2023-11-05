@@ -7,9 +7,9 @@ import com.ecommerce.library.repository.AddressRepository;
 import com.ecommerce.library.service.AddressService;
 import com.ecommerce.library.service.CustomerService;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.logging.Logger;
 

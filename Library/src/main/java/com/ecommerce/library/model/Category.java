@@ -1,8 +1,7 @@
 package com.ecommerce.library.model;
 
-import com.ecommerce.library.annotation.NoWhiteSpace;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 

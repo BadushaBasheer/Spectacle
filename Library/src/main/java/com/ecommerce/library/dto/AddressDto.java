@@ -1,10 +1,10 @@
 package com.ecommerce.library.dto;
 
 import com.ecommerce.library.model.Customer;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jdk.jfr.StackTrace;
 import lombok.*;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter

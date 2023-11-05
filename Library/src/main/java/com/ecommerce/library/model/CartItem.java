@@ -1,8 +1,9 @@
 package com.ecommerce.library.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.*;
+
+import javax.validation.constraints.Min;
 
 
 @Getter

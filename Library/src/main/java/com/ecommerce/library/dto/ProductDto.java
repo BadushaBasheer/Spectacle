@@ -1,10 +1,10 @@
 package com.ecommerce.library.dto;
 
 import com.ecommerce.library.model.Category;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.*;
 
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Data

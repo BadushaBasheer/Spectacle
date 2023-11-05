@@ -10,7 +10,6 @@ import com.ecommerce.library.repository.CustomerRepository;
 import com.ecommerce.library.service.CustomerService;
 
 import com.ecommerce.library.service.WalletService;
-import jakarta.validation.Valid;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
+import javax.validation.Valid;
 import java.security.SecureRandom;
 import java.util.*;
 import java.util.stream.Collectors;
