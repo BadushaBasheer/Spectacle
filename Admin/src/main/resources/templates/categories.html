@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
-<head th:replace="~{fragments::header}"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: header}"></head>
 <body id="page-top">
 <div id="wrapper">
     <ul th:replace="~{fragments::sidebar}"></ul>
@@ -8,24 +8,8 @@
         <div id="content">
             <nav th:replace="~{fragments::top-navbar}"></nav>
             <div class="container-fluid">
-<!--                <div class="row mb-4">-->
-<!--                    <div class="col-md-8">-->
-<!--                        <form th:action="@{/search}" method="get" class="form-inline">-->
-<!--                            <div class="input-group">-->
-<!--                                <input type="text" id="category" name="category" class="form-control"-->
-<!--                                       placeholder="Search">-->
-<!--                                <div class="input-group-append">-->
-<!--                                    <button type="submit" class="btn btn-primary">-->
-<!--                                        <i class="fas fa-search"></i>-->
-<!--                                    </button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </form>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <button type="button" class="btn btn-success mb-3" data-toggle="modal"
-                        data-target="#exampleAddCategoryModal"
-                        data-whatever="@mdo">Add Category
+                        data-target="#exampleModal">Add Category
                 </button>
                 <p th:if="${size == 0}">No category</p>
                 <div th:if="${success}" class="text-center alert alert-success">
@@ -34,88 +18,98 @@
                 <div th:if="${failed}" class="text-center alert alert-danger">
                     <p th:text="${failed}"></p>
                 </div>
-                <table class="table table-striped text-uppercase" th:if="${size > 0}">
+                <div th:if="${duplicate}" class="text-center alert alert-danger">
+                    <p th:text="${duplicate}"></p>
+                </div>
+                <table id="categoriesTable" class="table table-bordered" th:if="${size>0}">
                     <thead>
                     <tr>
-                        <th scope="col">Category Index</th>
+                        <th scope="col">Index</th>
                         <th scope="col">Category Name</th>
-                        <th scope="col">Update</th>
+                        <th scope="col">Edit Category Name</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
-                    <tbody class="text-uppercase">
-                    <tr th:each="category: ${categories}">
-                        <th scope="row" th:text="${category.id}"></th>
+                    <tbody>
+                    <tr th:each=" category,iterStat : ${categories}">
+                        <td th:text="${iterStat.index + 1}"></td>
                         <td th:text="${category.name}"></td>
+                        <td><a id="editButton" th:href="@{/findById(id=${category.id})}" class="btn btn-primary"
+                               data-toggle="modal" data-target="#editModal">Update</a></td>
                         <td>
-                            <a id="editButton" th:href="@{/findById(id=${category.id})}" class="btn btn-primary">Update</a>
-                        </td>
-                        <td>
-                            <a th:if="${category.is_activated()} == true" th:href="@{/disable-category(id=${category.id})}" class="btn btn-warning">Disable</a>
-                            <a th:if="${category.is_activated()} == false" th:href="@{/enable-category(id=${category.id})}" class="btn btn-danger">Enable</a>
+                            <a th:if="${category.is_activated()} == true"
+                               th:href="@{/disable-category(id=${category.id})}"
+                               class="btn btn-warning">Disable</a>
+                            <a th:if="${category.is_activated()} == false"
+                               th:href="@{/enable-category(id=${category.id})}"
+                               class="btn btn-danger">Enable</a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <footer th:replace="~{fragments::footer}"></footer>
-    </div>
-</div>
-<a th:replace="~{fragments::scroll}"></a>
-<div class="modal fade" id="exampleAddCategoryModal" tabindex="-1" role="dialog"
-     aria-labelledby="exampleAddCategoryModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleAddCategoryModalLabel">New Category</h5>
-            </div>
-            <div class="modal-body">
-                <form th:action="@{/save-category}" method="post">
-                    <div class="form-group">
-                        <label for="name" class="col-form-label">Category Name:</label>
-                        <input type="text" class="form-control" id="name" name="name">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
+                <footer th:replace="~{fragments::footer}"></footer>
             </div>
         </div>
-    </div>
-</div>
-<!--End-->
+        <a th:replace="~{fragments:: scroll}"></a>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <form th:action="@{/save-category}" method="post" th:object="${categoryNew}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New Category</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" th:field="*{name}" id="recipient-name"
+                                       required="" pattern="[A-Za-z]+(\s[A-Za-z]+)*"
+                                       title="Only letters and spaces in-between are allowed"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Edit Category Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit category</h5>
-            </div>
-            <div class="modal-body">
-                <form th:action="@{/update-category}" method="post">
-                    <div class="form-group">
-                        <label for="idEdit" class="col-form-label">ID</label>
-                        <input type="text" class="form-control" id="idEdit" name="id" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="nameEdit" class="col-form-label">Category
-                            Name</label> <input type="text" class="form-control" id="nameEdit" name="name">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <a th:href="@{/categories}" class="btn btn-danger">Close</a>
-                </form>
-            </div>
+            </form>
         </div>
-    </div>
-</div>
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalExample" aria-hidden="true">
+            <form th:action="@{/update-category}" method="post" th:object="${categoryNew}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalExample">Edit Category</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <input type="hidden" class="form-control" id="idEdit" name="id" th:field="*{id}"
+                                       readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nameEdit" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" id="nameEdit" th:field="*{name}" name="name"
+                                       required=""
+                                       pattern="[A-Za-z]+(\s[A-Za-z]+)*"
+                                       title="Only letters and spaces in-between are allowed"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+<a th:replace="~{fragments:: logoutModel}"></a>
 <div th:replace="~{fragments::script}"></div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/js/categories.js}"></script>
+
 
 </body>
 

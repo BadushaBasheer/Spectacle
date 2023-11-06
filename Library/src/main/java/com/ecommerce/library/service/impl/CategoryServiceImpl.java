@@ -14,7 +14,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository repo;
 
-    @Autowired
     public CategoryServiceImpl(CategoryRepository repo) {
         this.repo = repo;
     }
@@ -41,6 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
         return repo.findById(id).get();
     }
 
+
     @Override
     public Category update(Category category) {
         System.out.println(category.getId());
@@ -51,19 +51,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void disableById(Long id) {
-        Category category = repo.getById(id);
-        category.set_deleted(true);
-        category.set_activated(false);
-        repo.save(category);
+        updateActivationStatus(id, false);
     }
 
     @Override
     public void enabledById(Long id) {
+        updateActivationStatus(id, true);
+    }
+
+    private void updateActivationStatus(Long id, boolean activated) {
         Category category = repo.getById(id);
-        category.set_activated(true);
-        category.set_deleted(false);
+        category.set_activated(activated);
+        category.set_deleted(!activated);
         repo.save(category);
     }
+
 
     @Override
     public List<Category> findAllByActivated() {

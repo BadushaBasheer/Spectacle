@@ -51,9 +51,12 @@ public class CategoryController {
         try {
             categoryService.save(category);
             attributes.addFlashAttribute("success", "Added successfully");
+        } catch (DataIntegrityViolationException e) {
+            attributes.addFlashAttribute("duplicate", "Duplicate entry not possible");
+            e.printStackTrace();
         } catch (Exception e) {
-            logger.error("An error occurred", e);
-            attributes.addFlashAttribute("failed", "Failed to add because duplicate name");
+            e.printStackTrace();
+            attributes.addFlashAttribute("failed", "Error server");
         }
         return "redirect:/categories";
     }
@@ -61,21 +64,40 @@ public class CategoryController {
 
 //===============================================UPDATE=========================================================================
 
-    @GetMapping("/findById")
+    @GetMapping( "/findById")
     @ResponseBody
     public Category findById(Long id) {
+
         return categoryService.findById(id);
     }
+//    @PostMapping("/update-category")
+//    public String update(@Valid Category category, RedirectAttributes redirectAttributes) {
+//        try {
+//            if (category.getId() == null) {
+//                System.out.println("Null");
+//            } else {
+//                categoryService.update(category);
+//                redirectAttributes.addFlashAttribute("success", "Update successfully!");
+//            }
+//        } catch (DataIntegrityViolationException e1) {
+//            e1.printStackTrace();
+//            redirectAttributes.addFlashAttribute("duplicate", "Duplicate name of category, please check again!");
+//        } catch (Exception e2) {
+//            e2.printStackTrace();
+//            redirectAttributes.addFlashAttribute("error", "Error from server or duplicate name of category, please check again!");
+//        }
+//        return "redirect:/categories";
+//    }
 
     @PostMapping("/update-category")
-    public String update(@Valid Category category, RedirectAttributes redirectAttributes) {
-        try {
-            if (category.getId() == null) {
-                System.out.println("Null");
-            } else {
-                categoryService.update(category);
-                redirectAttributes.addFlashAttribute("success", "Update successfully!");
-            }
+    public String update(@ModelAttribute("categoryNew") Category category, RedirectAttributes redirectAttributes) {
+        System.out.println("update start");
+        try {if (category.getId() == null) {
+            System.out.println("Null");
+        } else {
+            categoryService.update(category);
+            redirectAttributes.addFlashAttribute("success", "Update successfully!");
+        }
         } catch (DataIntegrityViolationException e1) {
             e1.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Duplicate name of category, please check again!");
@@ -85,7 +107,6 @@ public class CategoryController {
         }
         return "redirect:/categories";
     }
-
 //==================================================ENABLE/DISABLE======================================================================
 
     @RequestMapping(value = "/disable-category", method = {RequestMethod.GET, RequestMethod.PUT})
@@ -93,6 +114,7 @@ public class CategoryController {
         try {
             categoryService.disableById(id);
             redirectAttributes.addFlashAttribute("success", "Disabled successfully!");
+
 
         } catch (DataIntegrityViolationException e1) {
             e1.printStackTrace();
