@@ -79,7 +79,7 @@ public class CartController {
     }
 //=====================================================================================================================================================
 
-    @RequestMapping(value = "/update-cart", method = RequestMethod.POST)
+    @RequestMapping(value = "/update-cart", method = {RequestMethod.POST,RequestMethod.GET})
     public String updateCart(
             Model model,
             Principal principal,

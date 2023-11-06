@@ -50,7 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Getter
     private Date otpRequestedTime;
-    long  otpRequestedTimeMillis=0;
+    long otpRequestedTimeMillis = 0;
 
     @Override
     public Optional<Customer> findByEmail(String email) {
@@ -224,7 +224,6 @@ public class CustomerServiceImpl implements CustomerService {
         return customerDto;
     }
 
-
     public String login(LoginDto loginDto) {
         Customer customer = customerRepository.findByEmail(loginDto.getEmail())
                 .orElseThrow(
@@ -261,11 +260,10 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(customer);
         setOtpRequestedTime(new Date());
         otpRequestedTimeMillis = otpRequestedTime.getTime();
-        ;
         return emailService.sendSimpleMail(new EmailDetails(username, "Your OTP for verification is " + otp, "Verify with OTP"));
     }
 }
-    //    public boolean verify(String verficationCode) {
+//    public boolean verify(String verficationCode) {
 //        Customer customer = customerRepository.findByVerificationCode(verficationCode);
 //        if (customer == null || customer.is_blocked()) {
 //            return false;

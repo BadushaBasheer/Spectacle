@@ -3,6 +3,7 @@
 <head th:replace="~{fragments :: html_head}"></head>
 <body class="animsition">
 <header th:replace="~{fragments :: header_top}"></header>
+
 <form th:action="@{/update-cart}" method="post" class="bg0 p-t-75 p-b-85">
     <div class="container">
         <div class="row">
@@ -65,13 +66,9 @@
                 </div>
             </div>
         </div>
+
     </div>
 </form>
-<div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<i class="zmdi zmdi-chevron-up"></i>
-		</span>
-</div>
 
 <footer th:replace="~{fragments :: footer_sec}"></footer>
 

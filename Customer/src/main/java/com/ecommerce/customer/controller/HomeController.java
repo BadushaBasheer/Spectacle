@@ -78,9 +78,9 @@ public class HomeController {
         return "product";
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/blog")
     public String viewProfile() {
-        return "profile";
+        return "blog";
     }
 
 ////====================================PRODUCT FILTER==================================================================
@@ -118,31 +118,6 @@ public class HomeController {
         return "redirect:/login?logout";
     }
 //=========================================================================================================
-
-    @GetMapping("/loadForgotPassword")
-    public String loadForgotPassword(){
-        return "forgot-password";
-    }
-
-    @GetMapping("/loadResetPassword/{id}")
-    public String loadResetPassword(@PathVariable int id){
-        return "reset-password";
-    }
-
-    @PostMapping("/forgotPassword")
-    public String forgotPassword(@RequestParam String email,
-                                 @RequestParam String phoneNumber,
-                                 HttpSession session
-
-        ){
-        Customer customer=customerRepository.findByEmailAndPhoneNumber(email,phoneNumber);
-        if (customer!=null){
-            return "redirect:/reset-password";
-        }
-        session.setAttribute("msg","invalid email and password");
-        session.removeAttribute("msg");
-        return "forgot-password";
-    }
 
 
 }

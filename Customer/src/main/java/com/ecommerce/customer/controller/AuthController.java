@@ -2,25 +2,25 @@ package com.ecommerce.customer.controller;
 
 import com.ecommerce.library.dto.CustomerDto;
 import com.ecommerce.library.dto.LoginDto;
+import com.ecommerce.library.model.Category;
 import com.ecommerce.library.model.Customer;
 import com.ecommerce.library.repository.CustomerRepository;
+import com.ecommerce.library.service.CategoryService;
 import com.ecommerce.library.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
+import java.util.List;
 
 
 @Controller
@@ -28,13 +28,16 @@ public class AuthController {
     private final CustomerService customerService;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    private final CategoryService categoryService;
+
     private final CustomerRepository customerRepository;
 
 
     @Autowired
-    public AuthController(CustomerService customerService, BCryptPasswordEncoder passwordEncoder, CustomerRepository customerRepository) {
+    public AuthController(CustomerService customerService, BCryptPasswordEncoder passwordEncoder, CategoryService categoryService, CustomerRepository customerRepository) {
         this.customerService = customerService;
         this.passwordEncoder = passwordEncoder;
+        this.categoryService = categoryService;
         this.customerRepository = customerRepository;
     }
 
@@ -99,35 +102,6 @@ public class AuthController {
     }
 
 
-    @GetMapping("/forgot-password")
-    public String forgotPassword(Model model) {
-        model.addAttribute("title", "Forgot Password");
-        return "forgot-password";
-    }
-
-
-//    @GetMapping("/verify-account")
-//    public ResponseEntity<String> verifyAccount(@RequestParam(name = "email") String email,
-//                                                @RequestParam(name = "otp") String otp) {
-//        if (email != null && !email.isEmpty() && otp != null && !otp.isEmpty()) {
-//            String response = customerService.verifyAccount(email, otp);
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>("Invalid parameters", HttpStatus.BAD_REQUEST);
-//        }
-//    }
-//
-//    @PostMapping("/regenerate-otp")
-//    public ResponseEntity<String> regenerateOtp(@RequestParam(name = "email") String email) {
-//        if (email != null && !email.isEmpty()) {
-//            String response = customerService.regenerateOtp(email);
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        } else {
-//            // Handle the case when email is missing or empty
-//            return new ResponseEntity<>("Invalid email parameter", HttpStatus.BAD_REQUEST);
-//        }
-//    }
-
 
     @GetMapping("/contact")
     public String viewContact() {
@@ -135,25 +109,58 @@ public class AuthController {
     }
 
 
-    @GetMapping("/otpVerification")
-    public String otpSent(Model model, CustomerDto customerDto) {
-        model.addAttribute("otpValue", customerDto);
-        return "otpScreen";
+    @GetMapping("/forgot-password")
+    public String forgotPasswordOTP(Model model, CustomerDto customerDto){
+
+        model.addAttribute("title", "Forgot Password- OTP");
+        model.addAttribute("username",customerDto);
+
+        List<Category> categories=categoryService.findAllByActivated();
+        model.addAttribute("categories",categories);
+        return "forgot-password";
     }
 
-    @PostMapping("/otpVerification")
-    public String otpVerification(@ModelAttribute("otpValue") CustomerDto customerDto) {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        UserDetails user = (UserDetails) securityContext.getAuthentication().getPrincipal();
-//        Customer customer = customerRepository.findByEmail(user.getUsername());
-//        if(customer.getOtp() == customerDto.getOtp()) {
-//            customer.set_active(true);
-//            customerRepository.save(customer);
-//            return "redirect:/dashboard";
-//        }
-//        else
-            return "redirect:/login/otpVerification?error";
+    @PostMapping("/forgot-password")
+    public String forgotPasswordOTPSend(@ModelAttribute("username") CustomerDto customerDto, Model model){
+        String otp= customerService.genrateOTPAndSendOnEmail(customerDto.getUsername());
+        model.addAttribute("data",customerDto);
+        model.addAttribute("otpGenerationTime",System.currentTimeMillis());
+        List<Category> categories=categoryService.findAllByActivated();
+        model.addAttribute("categories",categories);
+        return "otpScreenEmail";
     }
+
+    @PostMapping("/forgot-password/otpVerification")
+    public String otpSentEmailPost(@ModelAttribute("data") CustomerDto customerDto , Model model, RedirectAttributes attributes) {
+        boolean isOTPValid = customerService.verifyOTP(customerDto.getOtp(),customerDto.getUsername());
+        if (isOTPValid) {
+            model.addAttribute("customerDto",customerDto);
+            return "passwordResetPage";
+        } else {
+            model.addAttribute("error", "Invalid OTP. Please try again.");
+            return "otpScreenEmail";
+        }
+    }
+
+    @PostMapping("/passwordResetPage")
+    public String passwordResetPage(@ModelAttribute("customerDto") CustomerDto customerDto, Model model, RedirectAttributes redirectAttributes){
+
+        System.out.println(customerDto);
+        System.out.println("here");
+        System.out.println(customerDto.getPassword());
+        System.out.println(customerDto.getRepeatPassword());
+        if(customerDto.getPassword().equals(customerDto.getRepeatPassword())){
+            Customer customer=customerRepository.findByUsername(customerDto.getUsername());
+            customer.setPassword(passwordEncoder.encode(customerDto.getPassword()));
+            customerRepository.save(customer);
+            redirectAttributes.addFlashAttribute("success", "Password is changed");
+        }
+        else{
+            redirectAttributes.addFlashAttribute("error", "Passwords are not same");
+        }
+        return "redirect:/login";
+    }
+
 
 
 
