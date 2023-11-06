@@ -21,7 +21,7 @@
                 <div th:if="${duplicate}" class="text-center alert alert-danger">
                     <p th:text="${duplicate}"></p>
                 </div>
-                <table id="categoriesTable" class="table table-bordered" th:if="${size>0}">
+                <table id="categoriesTable" class="table table-bordered text-uppercase" th:if="${size>0}">
                     <thead>
                     <tr>
                         <th scope="col">Index</th>
@@ -30,7 +30,7 @@
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-uppercase">
                     <tr th:each=" category,iterStat : ${categories}">
                         <td th:text="${iterStat.index + 1}"></td>
                         <td th:text="${category.name}"></td>
