@@ -77,7 +77,7 @@ public class HomeController {
         }
         return "product";
     }
-
+//==============================BLOG=============================
     @GetMapping("/blog")
     public String viewProfile() {
         return "blog";
